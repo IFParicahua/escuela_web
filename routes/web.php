@@ -12,5 +12,9 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('login');
 });
+Route::post('login', 'LoginController@login')->name('login');
+Route::post('/logout', 'LoginController@logout')->name('logout');
+
+Route::get('/inicio', 'LoginController@inicio');
