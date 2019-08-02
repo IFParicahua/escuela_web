@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
-use App\PersonaRole;
+use App\PersonaRoles;
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
@@ -29,7 +29,31 @@ class LoginController extends Controller
 
     public function inicio()
     {
-        $personaroles = PersonaRole::all()->roles;
-        return view('inicio', compact('personaroles'));
+        $roles = PersonaRoles::with('personaRol')->where('id_persona', 1)->get();
+        return view('inicio', compact('roles'));
     }
+
+    public function redirect($id)
+    {
+        switch ($id) {
+            case '1':
+                return redirect('/Administrador');
+                break;
+            case '2':
+                return redirect('/Contador');
+                break;
+            case '3':
+                return redirect('/Regente');
+                break;
+
+            case '4':
+                return redirect('/Profesor');
+                break;
+
+            case '5':
+                return redirect('/Padre');
+                break;
+        }
+    }
+
 }

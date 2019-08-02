@@ -17,4 +17,7 @@ Route::get('/', function () {
 Route::post('login', 'LoginController@login')->name('login');
 Route::post('/logout', 'LoginController@logout')->name('logout');
 
-Route::get('/inicio', 'LoginController@inicio');
+Route::get('/inicio', 'LoginController@inicio')->name('inicio');
+Route::get('rol/{id}', 'LoginController@redirect')->name('rol');
+
+Route::get('/Administrador', 'AdministradorController@index');
