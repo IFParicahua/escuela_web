@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="{{ asset('boostrap/css/bootstrap.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('boostrap/js/bootstrap.min.js') }}"/>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-
 </head>
 <body>
 <div class="container">

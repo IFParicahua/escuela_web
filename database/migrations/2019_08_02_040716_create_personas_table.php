@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreatePersonasTable extends Migration
 {
@@ -19,7 +19,7 @@ class CreatePersonasTable extends Migration
             $table->string('apellidopat', 40);
             $table->string('apellidomat', 40);
             $table->string('direccion', 150);
-            $table->string('ci', 40);
+            $table->string('ci', 40)->nullable();;
             $table->integer('telefono');
             $table->string('sexo', 1);
             $table->timestamps();

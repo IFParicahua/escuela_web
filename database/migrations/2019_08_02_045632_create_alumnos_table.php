@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateAlumnosTable extends Migration
 {
@@ -20,7 +20,7 @@ class CreateAlumnosTable extends Migration
             $table->foreign('id_persona')->references('id')->on('personas');
             $table->unsignedBigInteger('idtutor');
             $table->foreign('idtutor')->references('id')->on('tutores');
-            $table->integer('rude');
+            $table->integer('rude')->nullable();;
             $table->timestamps();
         });
     }

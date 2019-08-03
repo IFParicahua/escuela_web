@@ -19,11 +19,13 @@
 </head>
 <body>
 <div class="sidebar">
-    <h2>{{Auth::user()->username}}</h2>
+    <h5>{{Auth::user()->username}} </h5>
+    <h6></h6>
     <ul>
         <li><a href="AdminArea">Area</a></li>
         <li><a href="AdminMateria">Materias</a></li>
         <li><a href="AdminAsignarMateria">Asignacion de Materias</a></li>
+        <li><a href="AdminTipoCalificacion">Tipo de Calificaciones</a></li>
         <li><a href="AdminTutor">Tutor</a></li>
         <li><a href="AdminUser">Alumno</a></li>
         <li><a href="AdminProfesor">Profesor</a></li>
