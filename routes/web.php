@@ -24,34 +24,34 @@ Route::get('/Administrador', 'AdministradorController@index');
 
 //AREAS
 Route::get('/AdminArea', 'AdministradorController@area')->name('AdminArea');
-Route::post('/AdminArea/create', 'AdministradorController@AreaCreate');
-Route::post('/AdminArea/edit', 'AdministradorController@areaEditar');
-Route::get('/AdminArea/{id}/delete', 'AdministradorController@areaDelete');
+Route::post('/AdminArea/create', 'AdminGuardarController@AreaCreate');
+Route::post('/AdminArea/edit', 'AdminActualizarController@areaEditar');
+Route::get('/AdminArea/{id}/delete', 'AdminEliminarController@areaDelete');
 
 //NIVELES
 Route::get('/AdminNivel', 'AdministradorController@nivel')->name('AdminNivel');
-Route::post('/AdminNiveles/create', 'AdministradorController@NivelesCreate');
-Route::post('/AdminNiveles/edit', 'AdministradorController@nivelEditar');
-Route::get('/AdminNiveles/{id}/delete', 'AdministradorController@niveleDelete');
+Route::post('/AdminNiveles/create', 'AdminGuardarController@NivelesCreate');
+Route::post('/AdminNiveles/edit', 'AdminActualizarController@nivelEditar');
+Route::get('/AdminNiveles/{id}/delete', 'AdminEliminarController@niveleDelete');
 
 //TURNOS
 Route::get('/AdminTurno', 'AdministradorController@turno')->name('AdminTurno');
-Route::post('/AdminTurnos/create', 'AdministradorController@TurnosCreate');
-Route::post('/AdminTurnos/edit', 'AdministradorController@turnoEditar');
-Route::get('/AdminTurnos/{id}/delete', 'AdministradorController@turnoDelete');
+Route::post('/AdminTurnos/create', 'AdminGuardarController@TurnosCreate');
+Route::post('/AdminTurnos/edit', 'AdminActualizarController@turnoEditar');
+Route::get('/AdminTurnos/{id}/delete', 'AdminEliminarController@turnoDelete');
 
 //GESTION
 Route::get('/AdminGestion', 'AdministradorController@gestion')->name('AdminGestion');
-Route::post('/AdminGestion/create', 'AdministradorController@GestionCreate');
-Route::post('/AdminGestion/edit', 'AdministradorController@gestionEditar');
-Route::get('/AdminGestion/{id}/delete', 'AdministradorController@gestionDelete');
+Route::post('/AdminGestion/create', 'AdminGuardarController@GestionCreate');
+Route::post('/AdminGestion/edit', 'AdminActualizarController@gestionEditar');
+Route::get('/AdminGestion/{id}/delete', 'AdminEliminarController@gestionDelete');
 Route::get('/CerrarGestion', 'AdministradorController@gestionClose');
 
 //TIPO CALIFICAION
 Route::get('/AdminTipoCalificacion', 'AdministradorController@tipocalificacion')->name('AdminTipoCalificacion');
-Route::post('/AdminTipoCalificacion/create', 'AdministradorController@TcalificacionCreate');
-Route::post('/AdminTipoCalificacion/edit', 'AdministradorController@TcalificacionEditar');
-Route::get('/AdminTipoCalificacion/{id}/delete', 'AdministradorController@TcalificacionDelete');
+Route::post('/AdminTipoCalificacion/create', 'AdminGuardarController@TcalificacionCreate');
+Route::post('/AdminTipoCalificacion/edit', 'AdminActualizarController@TcalificacionEditar');
+Route::get('/AdminTipoCalificacion/{id}/delete', 'AdminEliminarController@TcalificacionDelete');
 //
 //Route::get('/Contador', function () { return view('Contador'); });
 //Route::get('/Regente', function () { return view('Regente'); });
