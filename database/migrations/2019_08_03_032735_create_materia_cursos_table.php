@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMateriasTable extends Migration
+class CreateMateriaCursosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateMateriasTable extends Migration
      */
     public function up()
     {
-        Schema::create('materias', function (Blueprint $table) {
+        Schema::create('materia_cursos', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('nombre', 40);
-            $table->char('estado', 1);
-            $table->unsignedBigInteger('id_area');
-            $table->foreign('id_area')->references('id')->on('areas');
+            $table->unsignedBigInteger('id_materia');
+            $table->foreign('id_materia')->references('id')->on('materias');
+            $table->unsignedBigInteger('id_curso');
+            $table->foreign('id_curso')->references('id')->on('cursos');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateMateriasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('materias');
+        Schema::dropIfExists('materia_cursos');
     }
 }
