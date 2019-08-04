@@ -19,15 +19,17 @@
 </head>
 <body>
 <div class="sidebar">
-    <h5>{{Auth::user()->username}} </h5>
-    <h6></h6>
+    <div class="titulos">
+        <span class="usuario">{{Session('session-user')}}</span>
+        <span class="rol">{{Session('sesion-rol')}}</span>
+    </div>
     <ul>
         <li><a href="AdminArea">Area</a></li>
         <li><a href="AdminMateria">Materias</a></li>
         <li><a href="AdminAsignarMateria">Asignacion de Materias</a></li>
         <li><a href="AdminTipoCalificacion">Tipo de Calificaciones</a></li>
         <li><a href="AdminTutor">Tutor</a></li>
-        <li><a href="AdminUser">Alumno</a></li>
+        <li><a href="AdminAlumno">Alumno</a></li>
         <li><a href="AdminProfesor">Profesor</a></li>
         <li><a href="AdminGestion">Gestion</a></li>
         <li><a href="AdminNivel">Nivel</a></li>

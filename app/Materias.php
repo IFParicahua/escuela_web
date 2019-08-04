@@ -6,5 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Materias extends Model
 {
-    //
+    protected $table = 'materias';
+
+    public function materiasAreas()
+    {
+        return $this->belongsTo(
+            'App\Areas',
+            'id_area'
+        );
+    }
 }

@@ -92,13 +92,14 @@
                           id="form-new">
                         {!! csrf_field() !!}
                         <div class="panel-body">
-                            <input type="hidden" class="form-control" id="pkarea" name="pkarea">
+                            <input type="hidden" class="form-control" id="pkarea" name="pkarea"
+                                   value="{{ old('pkarea') }}">
 
                             <div class="row">
                                 <div class="form-group col-md-12 pl-1">
                                     <label for="editnombre" class="control-label">Nombre:</label>
                                     <input type="text" class="form-control" id="editnombre" name="editnombre"
-                                           maxlength="40" required>
+                                           maxlength="40" value="{{ old('editnombre') }}" required>
                                 </div>
                             </div>
                         </div>
@@ -116,6 +117,13 @@
         <script>
             $(function () {
                 $('#new-area').modal('show');
+            });
+        </script>
+    @endif
+    @if(!empty(Session::get('error_code')) && Session::get('error_code') == 2)
+        <script>
+            $(function () {
+                $('#edit-area').modal('show');
             });
         </script>
     @endif

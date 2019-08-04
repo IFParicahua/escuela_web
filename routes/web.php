@@ -52,6 +52,40 @@ Route::get('/AdminTipoCalificacion', 'AdministradorController@tipocalificacion')
 Route::post('/AdminTipoCalificacion/create', 'AdminGuardarController@TcalificacionCreate');
 Route::post('/AdminTipoCalificacion/edit', 'AdminActualizarController@TcalificacionEditar');
 Route::get('/AdminTipoCalificacion/{id}/delete', 'AdminEliminarController@TcalificacionDelete');
+
+////MATERIA
+Route::get('/AdminMateria', 'AdministradorController@materia')->name('AdminMateria');
+Route::post('/AdminMateria/create', 'AdminGuardarController@MateriaCreate');
+Route::post('/Areas/fetch', 'FetchController@areasearch')->name('Areas.fetch');
+Route::post('/AdminMateria/edit', 'AdminActualizarController@materiaEditar');
+//Route::get('/AdminMateria/{id}/delete','AdministradorController@materiaDelete' );
+
+////TUTOR
+Route::get('/AdminTutor', 'AdministradorController@tutor')->name('AdminTutor');
+Route::post('/AdminTutor/create', 'AdminGuardarController@TutorCreate');
+Route::post('/AdminTutor/edit', 'AdminActualizarController@tutorEditar');
+//Route::get('/AdminTutor/{id}/delete','AdministradorController@tutorDelete' );
+
+////ALUMNO
+Route::get('/AdminAlumno', 'AdministradorController@alumno')->name('AdminUser');
+Route::post('/AdminAlumno/create', 'AdminGuardarController@AlumnoCreate');
+Route::post('/AdminAlumno/complete', 'FetchController@tutorcomplete')->name('AdminAlumno.complete');
+Route::post('/AdminAlumno/edit', 'AdminActualizarController@alumnoEditar');
+//Route::get('/AdminAlumno/{id}/delete','AdministradorController@alumnoDelete' );
+
+////PROFESOR
+Route::get('/AdminProfesor', 'AdministradorController@profesor')->name('AdminProfesor');
+Route::post('/AdminProfesor/create', 'AdminGuardarController@ProfesorCreate');
+Route::post('/AdminProfesor/edit', 'AdminActualizarController@profesorEditar');
+//Route::get('/AdminProfesor/{id}/delete','AdministradorController@profesorDelete' );
+
+////CURSOS
+Route::get('/AdminCurso', 'AdministradorController@curso')->name('AdminCurso');
+Route::post('/AdminCursos/create', 'AdminGuardarController@CursosCreate');
+Route::post('/nivel/fetch', 'FetchController@nivelsearch')->name('nivel.fetch');
+Route::post('/AdminCursos/edit', 'AdminActualizarController@cursoEditar');
+//Route::get('/AdminCursos/{id}/delete','AdministradorController@cursoDelete' );
+
 //
 //Route::get('/Contador', function () { return view('Contador'); });
 //Route::get('/Regente', function () { return view('Regente'); });

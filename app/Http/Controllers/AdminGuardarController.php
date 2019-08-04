@@ -2,41 +2,90 @@
 
 namespace App\Http\Controllers;
 
+use App\Alumnos;
 use App\Areas;
+use App\Cursos;
 use App\Gestiones;
+use App\Materias;
 use App\Niveles;
+use App\Personas;
+use App\Profesores;
 use App\TipoCalificaciones;
 use App\Turnos;
+use App\Tutores;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class AdminGuardarController extends Controller
 {
     public function AreaCreate(Request $request)
     {
-        $areas = new Areas;
-        $areas->nombre = $request->input('nombre');
-        $areas->estado = '0';
-        $areas->save();
-        return back();
+        $nombre = $request->input('nombre');
+        $validar = Validator::make($request->all(), [
+            'nombre' => 'unique:areas'
+        ]);
+        if ($validar->fails()) {
+            $notificacion = array(
+                'message' => $nombre . ' ya existe',
+                'alert-type' => 'error'
+            );
+            return back()->with($notificacion)
+                ->with('error_code', 1)
+                ->withInput();
+        } else {
+            $areas = new Areas;
+            $areas->nombre = $nombre;
+            $areas->estado = '0';
+            $areas->save();
+            return back();
+        }
     }
 
     public function NivelesCreate(Request $request)
     {
-        $nivel = new Niveles;
-        $nivel->nombre = $request->input('nombre');
-        $nivel->estado = '0';
-        $nivel->save();
-        return back();
+        $nombre = $request->input('nombre');
+        $validar = Validator::make($request->all(), [
+            'nombre' => 'unique:niveles'
+        ]);
+        if ($validar->fails()) {
+            $notificacion = array(
+                'message' => $nombre . ' ya existe',
+                'alert-type' => 'error'
+            );
+            return back()->with($notificacion)
+                ->with('error_code', 1)
+                ->withInput();
+        } else {
+            $nivel = new Niveles;
+            $nivel->nombre = $nombre;
+            $nivel->estado = '0';
+            $nivel->save();
+            return back();
+        }
     }
 
     public function TurnosCreate(Request $request)
     {
-        $turno = new Turnos;
-        $turno->nombre = $request->input('nombre');
-        $turno->estado = '0';
-        $turno->save();
-        return back();
+        $nombre = $request->input('nombre');
+        $validar = Validator::make($request->all(), [
+            'nombre' => 'unique:turnos'
+        ]);
+        if ($validar->fails()) {
+            $notificacion = array(
+                'message' => $nombre . ' ya existe',
+                'alert-type' => 'error'
+            );
+            return back()->with($notificacion)
+                ->with('error_code', 1)
+                ->withInput();
+        } else {
+            $turno = new Turnos;
+            $turno->nombre = $nombre;
+            $turno->estado = '0';
+            $turno->save();
+            return back();
+        }
     }
 
     public function GestionCreate(Request $request)
@@ -134,6 +183,7 @@ class AdminGuardarController extends Controller
     {
         $inicio = $request->input('inicio');
         $fin = $request->input('fin');
+        $nombre = $request->input('nombre');
         $date_inicio = TipoCalificaciones::where(([
             ['fecha_inicial', '<=', $inicio],
             ['fecha_final', '>=', $inicio],
@@ -148,8 +198,13 @@ class AdminGuardarController extends Controller
         ]))->count();
 
         $validator = Validator::make($request->all(), [
-            'fin' => 'after:inicio'
+            'fin' => 'after:inicio',
+            'nombre' => 'unique:tipo_calificaciones'
+        ], [
+            'fin.after' => 'La fecha de inicio debe ir antes que la fecha final.',
+            'nombre.unique' => 'El nombre ya a existe.'
         ]);
+        $error = $validator->errors();
         if ($date_inicio > 0) {
             if ($date_fin > 0) {
                 $notificacion = array(
@@ -189,7 +244,7 @@ class AdminGuardarController extends Controller
                 } else {
                     if ($validator->fails()) {
                         $notificacion = array(
-                            'message' => 'La fecha de inicio debe ser menor a la fecha final',
+                            'message' => $error->first('fin') . ' ' . $error->first('nombre'),
                             'alert-type' => 'error'
                         );
                         return back()->with($notificacion)
@@ -197,9 +252,9 @@ class AdminGuardarController extends Controller
                             ->withInput();
                     } else {
                         $tipogestion = new TipoCalificaciones;
-                        $tipogestion->nombre = $request->input('nombre');
-                        $tipogestion->fecha_inicial = $request->input('inicio');
-                        $tipogestion->fecha_final = $request->input('fin');
+                        $tipogestion->nombre = $nombre;
+                        $tipogestion->fecha_inicial = $inicio;
+                        $tipogestion->fecha_final = $fin;
                         $tipogestion->estado = '0';
                         $tipogestion->save();
                         return back();
@@ -209,4 +264,164 @@ class AdminGuardarController extends Controller
         }
     }
 
+    public function MateriaCreate(Request $request)
+    {
+        $idarea = $request->input('area_id');
+        $nombre = $request->input('nombre');
+        $validar = Validator::make($request->all(), [
+            'nombre' => [
+                'required', Rule::unique('materias', 'nombre')->where(function ($query) use ($idarea) {
+                    $query->where('id_area', $idarea);
+                })]
+        ]);
+        if ($validar->fails()) {
+            $area = Areas::where('id', $idarea)->value('nombre');
+            $notificacion = array(
+                'message' => 'Ya existe ' . $nombre . ' en ' . $area,
+                'alert-type' => 'error'
+            );
+            return back()->with($notificacion)
+                ->with('error_code', 1)
+                ->withInput();
+        } else {
+            $materia = new Materias;
+            $materia->nombre = $nombre;
+            $materia->id_area = $idarea;
+            $materia->estado = '0';
+            $materia->save();
+            return back();
+        }
+    }
+
+    public function TutorCreate(Request $request)
+    {
+        $validar = Validator::make($request->all(), [
+            'ci' => 'unique:personas'
+        ]);
+        if ($validar->fails()) {
+            $notificacion = array(
+                'message' => 'Este CI ya existe',
+                'alert-type' => 'error'
+            );
+            return back()->with($notificacion)
+                ->with('error_code', 1)
+                ->withInput();
+        } else {
+            $persona = new Personas;
+            $persona->nombre = $request->input('nombre');
+            $persona->apellidopat = $request->input('apaterno');
+            $persona->apellidomat = $request->input('amaterno');
+            $persona->direccion = $request->input('direccion');
+            $persona->ci = $request->input('ci');
+            $persona->telefono = $request->input('telefono');
+            $persona->sexo = $request->input('sexo');
+            $persona->save();
+            $cis = $request->input('ci');
+            $id = Personas::where('ci', $cis)->value('id');
+            $tutor = new Tutores;
+            $tutor->id_persona = $id;
+            $tutor->save();
+            return back();
+        }
+    }
+
+    public function AlumnoCreate(Request $request)
+    {
+        $validar = Validator::make($request->all(), [
+            'ci' => 'unique:personas',
+            'rude' => 'unique:alumnos'
+        ]);
+        $error = $validar->errors();
+        if ($validar->fails()) {
+            $notificacion = array(
+                'message' => $error->first('rude') . ' ' . $error->first('ci'),
+                'alert-type' => 'error'
+            );
+            return back()->with($notificacion)
+                ->with('error_code', 1)
+                ->withInput();
+        } else {
+            $persona = new Personas;
+            $persona->nombre = $request->input('nombre');
+            $persona->apellidopat = $request->input('apaterno');
+            $persona->apellidomat = $request->input('amaterno');
+            $persona->direccion = $request->input('direccion');
+            $persona->ci = $request->input('ci');
+            $persona->telefono = $request->input('telefono');
+            $persona->sexo = $request->input('sexo');
+            $persona->save();
+            $cis = $request->input('ci');
+            $id = Personas::where('ci', $cis)->value('id');
+            $alumno = new Alumnos;
+            $alumno->nacimiento = $request->input('nacimiento');
+            $alumno->id_persona = $id;
+            $alumno->idtutor = $request->input('tutor_id');
+            $alumno->rude = $request->input('rude');
+            $alumno->save();
+            return back();
+        }
+    }
+
+    public function ProfesorCreate(Request $request)
+    {
+        $validar = Validator::make($request->all(), [
+            'ci' => 'unique:personas'
+        ]);
+        $error = $validar->errors();
+        if ($validar->fails()) {
+            $notificacion = array(
+                'message' => $error->first('rude') . ' ' . $error->first('ci'),
+                'alert-type' => 'error'
+            );
+            return back()->with($notificacion)
+                ->with('error_code', 1)
+                ->withInput();
+        } else {
+            $persona = new Personas;
+            $persona->nombre = $request->input('nombre');
+            $persona->apellidopat = $request->input('apaterno');
+            $persona->apellidomat = $request->input('amaterno');
+            $persona->direccion = $request->input('direccion');
+            $persona->ci = $request->input('ci');
+            $persona->telefono = $request->input('telefono');
+            $persona->sexo = $request->input('sexo');
+            $persona->save();
+            $cis = $request->input('ci');
+            $id = Personas::where('ci', $cis)->value('id');
+            $profesor = new Profesores();
+            $profesor->id_persona = $id;
+            $profesor->save();
+            return back();
+        }
+    }
+
+    public function CursosCreate(Request $request)
+    {
+        $idnivel = $request->input('nivel');
+        $nombre = $request->input('nombre');
+        $validar = Validator::make($request->all(), [
+            'nombre' => [
+                'required', Rule::unique('cursos', 'nombre')->where(function ($query) use ($idnivel) {
+                    $query->where('id_nivel', $idnivel);
+                })]
+        ]);
+        if ($validar->fails()) {
+            $nivel = Niveles::where('id', $idnivel)->value('nombre');
+            $notificacion = array(
+                'message' => 'Ya existe ' . $nombre . ' en ' . $nivel,
+                'alert-type' => 'error'
+            );
+            return back()->with($notificacion)
+                ->with('error_code', 1)
+                ->withInput();
+        } else {
+            $curso = new Cursos();
+            $curso->nombre = $nombre;
+            $curso->grado = $request->input('grado');
+            $curso->id_nivel = $idnivel;
+            $curso->estado = '0';
+            $curso->save();
+            return back();
+        }
+    }
 }

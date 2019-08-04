@@ -65,8 +65,8 @@
                             <div class="row">
                                 <div id="nombre" class="form-group col-md-12 pl-1">
                                     <label for="nombre" class="control-label">Nombre:</label>
-                                    <input type="text" class="form-control" id="nombre" name="nombre" maxlength="40"
-                                           required>
+                                    <input type="text" class="form-control" id="nombre" name="nombre" maxlength="20"
+                                           value="{{ old('nombre') }}" required>
                                 </div>
                             </div>
                         </div>
@@ -92,12 +92,13 @@
                           id="form-new">
                         {!! csrf_field() !!}
                         <div class="panel-body">
-                            <input type="hidden" class="form-control" id="pknivel" name="pknivel">
+                            <input type="hidden" class="form-control" id="pknivel" name="pknivel"
+                                   value="{{ old('pknivel') }}">
                             <div class="row">
                                 <div class="form-group col-md-12 pl-1">
                                     <label for="editnombre" class="control-label">Nombre:</label>
                                     <input type="text" class="form-control" id="editnombre" name="editnombre"
-                                           maxlength="40" required>
+                                           maxlength="20" value="{{ old('editnombre') }}" required>
                                 </div>
                             </div>
                         </div>
@@ -111,6 +112,20 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div>
+    @if(!empty(Session::get('error_code')) && Session::get('error_code') == 1)
+        <script>
+            $(function () {
+                $('#new-nivel').modal('show');
+            });
+        </script>
+    @endif
+    @if(!empty(Session::get('error_code')) && Session::get('error_code') == 2)
+        <script>
+            $(function () {
+                $('#edit-nivel').modal('show');
+            });
+        </script>
+    @endif
     <script>
         $(document).ready(function () {
             $('a[data-confirm]').click(function (ev) {

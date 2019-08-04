@@ -76,7 +76,7 @@
                             <div class="row">
                                 <div id="nombre" class="form-group col-md-12 pl-1">
                                     <label for="nombre" class="control-label">Nombre:</label>
-                                    <input type="text" class="form-control" id="nombre" name="nombre" maxlength="40"
+                                    <input type="text" class="form-control" id="nombre" name="nombre" maxlength="15"
                                            value="{{ old('nombre') }}" required>
                                 </div>
                             </div>
@@ -84,7 +84,7 @@
                                 <div id="descripcion" class="form-group col-md-12 pl-1">
                                     <label for="descripcion" class="control-label">Descripcion:</label>
                                     <input type="text" class="form-control" id="descripcion" name="descripcion"
-                                           maxlength="40" value="{{ old('descripcion') }}" required>
+                                           maxlength="250" value="{{ old('descripcion') }}" required>
                                 </div>
                             </div>
 
@@ -123,13 +123,14 @@
                           id="form-new">
                         {!! csrf_field() !!}
                         <div class="panel-body">
-                            <input type="hidden" class="form-control" id="pkgestion" name="pkgestion">
+                            <input type="hidden" class="form-control" id="pkgestion" name="pkgestion" maxlength="15"
+                                   required>
 
                             <div class="row">
                                 <div class="form-group col-md-12 pl-1">
                                     <label for="editdescripcion" class="control-label">Descripcion:</label>
                                     <input type="text" class="form-control" id="editdescripcion" name="editdescripcion"
-                                           required>
+                                           maxlength="250" required>
                                 </div>
                             </div>
 
