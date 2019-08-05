@@ -2,7 +2,6 @@
 @section('content')
 
     <div class="col-11" style="margin: auto;">
-
         <div class="row">
             <div class="col-md-10 bg-primary">
                 <h3 style="text-align: center;color:#ffffff">Registro de Profesores</h3>
@@ -14,7 +13,7 @@
             </div>
         </div>
         <div class="row">
-            <table class="table table-striped" style="background:#ffffff;">
+            <table class="table table-scroll table-striped" style="background:#ffffff;">
                 <thead class="bg-primary" style="color:#ffffff">
                 <tr>
                     <th scope="col">Nombre</th>
@@ -24,7 +23,7 @@
                     <th scope="col">CI</th>
                     <th scope="col">Telefono</th>
                     <th scope="col">Sexo</th>
-                    <th scope="col"></th>
+                    <th scope="col" style="width: 114px;"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -37,7 +36,7 @@
                         <td>{{$profesor->profesorPersona->ci}}</td>
                         <td>{{$profesor->profesorPersona->telefono}}</td>
                         <td>{{$profesor->profesorPersona->sexo}}</td>
-                        <td>
+                        <td style="text-align: right;width: 114px;">
                             <a style="color: rgb(255,255,255)" class="btn btn-success btn-fill icon-pencil "
                                id="edit-item" title="Editar"
                                data-id="{{$profesor->profesorPersona->id}}"
@@ -50,7 +49,7 @@
                                data-sexo="{{$profesor->profesorPersona->sexo}}"
                             ></a>
                             <a class="btn btn-danger icon-bin" data-toggle="tooltip" title="Eliminar"
-                               href="AdminProfesor/{{$profesor->profesorPersona->idprofesor}}/delete"
+                               href="AdminProfesor/{{$profesor->id}}/delete"
                                data-confirm="¿Estas seguro que quieres eliminar a {{$profesor->profesorPersona->nombre}}?"></a>
                         </td>
                     </tr>

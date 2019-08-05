@@ -14,14 +14,14 @@
             </div>
         </div>
         <div class="row">
-            <table class="table table-striped" style="background:#ffffff;">
+            <table class="table table-scroll table-striped" style="background:#ffffff;">
                 <thead class="bg-primary" style="color:#ffffff">
                 <tr>
                     <th scope="col">Nombre</th>
                     <th scope="col">Inicio</th>
                     <th scope="col">Fin</th>
                     <th scope="col" style="text-align: center">Estado</th>
-                    <th scope="col"></th>
+                    <th scope="col" style="width: 114px;"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -37,7 +37,7 @@
                                 Cerrado
                             @endif
                         </td>
-                        <td style="text-align: right">
+                        <td style="text-align: right;width: 114px;">
                             <a style="color: rgb(255,255,255)" class="btn btn-success btn-fill icon-pencil "
                                id="edit-item" title="Editar"
                                data-id="{{$TCalificacion->id}}"

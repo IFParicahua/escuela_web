@@ -1,7 +1,6 @@
 body {
     font-family: sans-serif;
     margin: 0;
-    overflow: hidden;
 }
 
 .sidebar {
@@ -81,4 +80,21 @@ body {
 
 .abrir {
     transform: translate(250px);
+}
+
+
+.table-scroll tbody {
+    position: absolute;
+    overflow-y: scroll;
+    height: 470px;
+}
+
+.table-scroll tr {
+    width: 100%;
+    table-layout: fixed;
+    display: inline-table;
+}
+
+.table-scroll thead > tr > th {
+    border: none;
 }

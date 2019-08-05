@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Alumnos;
 use App\Areas;
+use App\CursoParalelos;
 use App\Cursos;
 use App\Gestiones;
 use App\Materias;
@@ -39,7 +40,6 @@ class AdminActualizarController extends Controller
             return back();
         }
     }
-
     public function nivelEditar(Request $request)
     {
         $id = $request->input('pknivel');
@@ -62,7 +62,6 @@ class AdminActualizarController extends Controller
             return back();
         }
     }
-
     public function turnoEditar(Request $request)
     {
         $id = $request->input('pkturno');
@@ -85,7 +84,6 @@ class AdminActualizarController extends Controller
             return back();
         }
     }
-
     public function gestionEditar(Request $request)
     {
         $id = $request->input('pkgestion');
@@ -94,7 +92,6 @@ class AdminActualizarController extends Controller
         $gestion->save();
         return back();
     }
-
     public function TcalificacionEditar(Request $request)
     {
         $id = $request->input('pkTCalificacion');
@@ -117,8 +114,6 @@ class AdminActualizarController extends Controller
             return back();
         }
     }
-
-    //Cerrar Desactivar
     public function gestionClose()
     {
         $id = Gestiones::max('id');
@@ -127,7 +122,6 @@ class AdminActualizarController extends Controller
         $gestion->save();
         return back();
     }
-
     public function materiaEditar(Request $request)
     {
         $id = $request->input('pkmateria');
@@ -157,7 +151,6 @@ class AdminActualizarController extends Controller
             return back();
         }
     }
-
     public function tutorEditar(Request $request)
     {
         $id = $request->input('PKpersona');
@@ -197,7 +190,6 @@ class AdminActualizarController extends Controller
             return back();
         }
     }
-
     public function alumnoEditar(Request $request)
     {
         $id = $request->input('pkpersona');
@@ -244,7 +236,6 @@ class AdminActualizarController extends Controller
             return back();
         }
     }
-
     public function profesorEditar(Request $request)
     {
         $id = $request->input('pkpersona');
@@ -284,7 +275,6 @@ class AdminActualizarController extends Controller
             return back();
         }
     }
-
     public function cursoEditar(Request $request)
     {
         $id = $request->input('pkcurso');
@@ -311,6 +301,45 @@ class AdminActualizarController extends Controller
             $curso->grado = $request->input('editgrado');
             $curso->id_nivel = $idnivel;
             $curso->save();
+            return back();
+        }
+    }
+
+    public function paraleloEditar(Request $request)
+    {
+        $id = $request->input('pkparalelo');
+        $idgestion = $request->input('editgestion_id');
+        $idturno = $request->input('editurno_id');
+        $idcurso = $request->input('editcurso_id');
+        $nombre = $request->input('editnombre');
+        $cupo = $request->input('editcupo');
+
+        $gestion = Gestiones::where('id', $idgestion)->value('nombre');
+        $turno = Turnos::where('id', $idturno)->value('nombre');
+        $cursos = Cursos::first()->where('id', '=', $idcurso)->get();
+        $curso = $cursos[0]->nombre . ' de ' . $cursos[0]->cursoNivel->nombre;
+        $validar = Validator::make($request->all(), [
+            'editnombre' => [
+                'required', Rule::unique('curso_paralelos', 'nombre')->where(function ($query) use ($idgestion, $idturno, $idcurso) {
+                    $query->where([['id_gestion', $idgestion], ['id_turno', $idturno], ['id_curso', $idcurso]]);
+                })->ignore($id, 'id')]
+        ]);
+        if ($validar->fails()) {
+            $notificacion = array(
+                'message' => 'Ya existe el paralelo ' . $nombre . ' en la ' . $gestion . ' en turno ' . $turno . ' y el curso ' . $curso,
+                'alert-type' => 'error'
+            );
+            return back()->with($notificacion)
+                ->with('error_code', 2)->with(compact('idgestion', 'idturno', 'idcurso', 'gestion', 'turno', 'curso'))
+                ->withInput();
+        } else {
+            $paralelo = CursoParalelos::find($id);
+            $paralelo->id_gestion = $idgestion;
+            $paralelo->id_turno = $idturno;
+            $paralelo->id_curso = $idcurso;
+            $paralelo->nombre = $nombre;
+            $paralelo->cupo_maximo = $cupo;
+            $paralelo->save();
             return back();
         }
     }

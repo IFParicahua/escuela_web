@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="row">
-            <table class="table table-striped" style="background:#ffffff;">
+            <table class="table table-scroll table-striped" style="background:#ffffff;">
                 <thead class="bg-primary" style="color:#ffffff">
                 <tr>
                     <th scope="col">Nombre</th>
@@ -26,7 +26,7 @@
                     <th scope="col">CI</th>
                     <th scope="col">Telefono</th>
                     <th scope="col">Sexo</th>
-                    <th scope="col"></th>
+                    <th scope="col" style="width: 114px;"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -39,7 +39,7 @@
                         <td>{{$tutor->tutorPersona->ci}}</td>
                         <td>{{$tutor->tutorPersona->telefono}}</td>
                         <td>{{$tutor->tutorPersona->sexo}}</td>
-                        <td>
+                        <td style="text-align: right;width: 114px;">
                             <a style="color: rgb(255,255,255)" class="btn btn-success btn-fill icon-pencil "
                                id="edit-item" title="Editar"
                                data-id="{{$tutor->tutorPersona->id}}"
@@ -52,7 +52,7 @@
                                data-sexo="{{$tutor->tutorPersona->sexo}}"
                             ></a>
                             <a class="btn btn-danger icon-bin" data-toggle="tooltip" title="Eliminar"
-                               href="AdminTutor/{{$tutor->tutorPersona->idtutor}}/delete"
+                               href="AdminTutor/{{$tutor->id}}/delete"
                                data-confirm="¿Estas seguro que quieres eliminar a {{$tutor->tutorPersona->nombre}}?"></a>
                         </td>
                     </tr>

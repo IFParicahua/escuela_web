@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Alumnos;
 use App\Areas;
+use App\CursoParalelos;
 use App\Cursos;
 use App\Gestiones;
+use App\Inscripciones;
 use App\Materias;
 use App\Niveles;
 use App\Personas;
@@ -421,6 +423,72 @@ class AdminGuardarController extends Controller
             $curso->id_nivel = $idnivel;
             $curso->estado = '0';
             $curso->save();
+            return back();
+        }
+    }
+
+    public function ParalelosCreate(Request $request)
+    {
+        $idgestion = $request->input('gestion_id');
+        $idturno = $request->input('turno_id');
+        $idcurso = $request->input('curso_id');
+        $nombre = $request->input('nombre');
+        $cupo = $request->input('cupo');
+        $validar = Validator::make($request->all(), [
+            'nombre' => [
+                'required', Rule::unique('curso_paralelos', 'nombre')->where(function ($query) use ($idgestion, $idturno, $idcurso) {
+                    $query->where([['id_gestion', $idgestion], ['id_turno', $idturno], ['id_curso', $idcurso]]);
+                })]
+        ]);
+        if ($validar->fails()) {
+            $gestion = Gestiones::where('id', $idgestion)->value('nombre');
+            $turno = Turnos::where('id', $idturno)->value('nombre');
+            $curso = Cursos::where('id', $idcurso)->value('nombre');
+            $notificacion = array(
+                'message' => 'Ya existe el paralelo ' . $nombre . ' en la ' . $gestion . ' en turno ' . $turno . ' y el curso ' . $curso,
+                'alert-type' => 'error'
+            );
+            return back()->with($notificacion)
+                ->with('error_code', 1)
+                ->withInput();
+        } else {
+            $paralelo = new CursoParalelos();
+            $paralelo->id_gestion = $idgestion;
+            $paralelo->id_turno = $idturno;
+            $paralelo->id_curso = $idcurso;
+            $paralelo->nombre = $nombre;
+            $paralelo->cupo_maximo = $cupo;
+            $paralelo->save();
+            return back();
+        }
+    }
+
+    public function InscripcionCreate(Request $request)
+    {
+        $idcurso = $request->input('curso_id');
+        $alumno = $request->input('alumno_name');
+        $curso = $request->input('curso_name');
+        $validar = Validator::make($request->all(), [
+            'alumno_id' => [
+                'required', Rule::unique('inscripciones', 'id_alumno')->where(function ($query) use ($idcurso) {
+                    $query->where('id_cursos_paralelos', $idcurso);
+                })]
+        ]);
+        if ($validar->fails()) {
+            $notificacion = array(
+                'message' => $alumno . ' ya fue inscrito en ' . $curso,
+                'alert-type' => 'error'
+            );
+            return back()->with($notificacion)
+                ->with('error_code', 1)
+                ->withInput();
+        } else {
+            $inscripcion = new Inscripciones();
+            $inscripcion->fecha = date("Ymd");
+            $inscripcion->observacion = $request->input('observacion');
+            $inscripcion->id_cursos_paralelos = $idcurso;
+            $inscripcion->id_alumno = $request->input('alumno_id');
+            $inscripcion->save();
             return back();
         }
     }

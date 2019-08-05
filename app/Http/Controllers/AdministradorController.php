@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 
 use App\Alumnos;
 use App\Areas;
+use App\CursoParalelos;
 use App\Cursos;
 use App\Gestiones;
+use App\Inscripciones;
 use App\Materias;
 use App\Niveles;
 use App\Profesores;
@@ -84,4 +86,18 @@ class AdministradorController extends Controller
         return view('AdminCursos', compact('cursos', 'niveles'));
     }
 
+    public function paralelo()
+    {
+        $paralelos = CursoParalelos::all();
+        $turnos = Turnos::all();
+        $cursos = Cursos::all();
+        $gestiones = Gestiones::all();
+        return view('AdminParalelos', compact('paralelos', 'turnos', 'cursos', 'gestiones'));
+    }
+
+    public function inscripcion()
+    {
+        $inscripciones = Inscripciones::all();
+        return view('AdminInscripciones', compact('inscripciones'));
+    }
 }

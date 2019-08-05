@@ -14,7 +14,7 @@
             </div>
         </div>
         <div class="row">
-            <table class="table table-striped" style="background:#ffffff;">
+            <table class="table table-scroll table-striped" style="background:#ffffff;">
                 <thead class="bg-primary" style="color:#ffffff">
                 <tr>
                     <th scope="col">Nombre</th>
@@ -26,7 +26,7 @@
                     <th scope="col">Sexo</th>
                     <th scope="col">Fecha de Nacimiento</th>
                     <th scope="col">Rude</th>
-                    <th scope="col"></th>
+                    <th scope="col" style="width: 114px;"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -41,7 +41,7 @@
                         <td>{{$alumno->alumnoPersona->sexo}}</td>
                         <td>{{date("d/m/Y",strtotime($alumno->nacimiento))}}</td>
                         <td>{{$alumno->rude}}</td>
-                        <td>
+                        <td style="text-align: right;width: 114px;">
                             <a style="color: rgb(255,255,255)" class="btn btn-success btn-fill icon-pencil "
                                id="edit-item" title="Editar"
                                data-id="{{$alumno->alumnoPersona->id}}"
@@ -58,7 +58,7 @@
                                data-tutor="{{$alumno->alumnoTutor->tutorPersona->ci}} - {{$alumno->alumnoTutor->tutorPersona->nombre}} {{$alumno->alumnoTutor->tutorPersona->apellidopat}} {{$alumno->alumnoTutor->tutorPersona->apellidomat}}"
                             ></a>
                             <a class="btn btn-danger icon-bin" data-toggle="tooltip" title="Eliminar"
-                               href="AdminAlumno/{{$alumno->alumnoPersona->idalumno}}/delete"
+                               href="AdminAlumno/{{$alumno->id}}/delete"
                                data-confirm="¿Estas seguro que quieres eliminar a {{$alumno->alumnoPersona->nombre}}?"></a>
                         </td>
                     </tr>
