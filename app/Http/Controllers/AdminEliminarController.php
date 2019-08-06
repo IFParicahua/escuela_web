@@ -7,6 +7,7 @@ use App\Areas;
 use App\CursoParalelos;
 use App\Cursos;
 use App\Gestiones;
+use App\Inscripciones;
 use App\Materias;
 use App\Niveles;
 use App\Personas;
@@ -192,6 +193,24 @@ class AdminEliminarController extends Controller
             $nombre = Materias::where('id', '=', $id)->value('nombre');
             $notificacion = array(
                 'message' => 'No se pudo eliminar el paralelo ' . $nombre,
+                'alert-type' => 'error'
+            );
+            return back()->with($notificacion);
+        }
+    }
+
+    public function inscripcionDelete($id)
+    {
+        try {
+            $inscripciones = Inscripciones::find($id);
+            $inscripciones->delete();
+            return back();
+        } catch (QueryException $e) {
+            $inscripcion = Inscripciones::find($id);
+            $nombre = $inscripcion->inscripcionAlumno->alumnoPersona->nombre . ' ' . $inscripcion->inscripcionAlumno->alumnoPersona->apellidopat . ' ' . $inscripcion->inscripcionAlumno->alumnoPersona->apellidomat;
+            $curso = $inscripcion->inscripcionParalelo->paraleloCurso->nombre . ' ' . $inscripcion->inscripcionParalelo->nombre . ' de ' . $inscripcion->inscripcionParalelo->paraleloCurso->cursoNivel->nombre;
+            $notificacion = array(
+                'message' => 'La inscripcion de ' . $nombre . ' en el curso ' . $curso . ' no se puede eliminar.',
                 'alert-type' => 'error'
             );
             return back()->with($notificacion);

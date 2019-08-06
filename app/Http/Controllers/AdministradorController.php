@@ -15,6 +15,7 @@ use App\Profesores;
 use App\TipoCalificaciones;
 use App\Turnos;
 use App\Tutores;
+use Illuminate\Support\Facades\Crypt;
 
 class AdministradorController extends Controller
 {
@@ -99,5 +100,18 @@ class AdministradorController extends Controller
     {
         $inscripciones = Inscripciones::all();
         return view('AdminInscripciones', compact('inscripciones'));
+    }
+
+    public function asignarMateria()
+    {
+        $materias = CursoParalelos::all();
+        return view('AdminAsignarMateria', compact('materias'));
+    }
+
+    public function asignarMaterias($id)
+    {
+        $id = Crypt::decrypt($id);
+
+        return view('AdminAsignarMaterias', compact('id'));
     }
 }

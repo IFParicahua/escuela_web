@@ -29,14 +29,11 @@
                 @foreach ($inscripciones as $inscripcion)
                     <tr>
                         <td>
-                            {{$inscripcion->inscripcionAlumno->alumnoPersona->nombre}}
-                            {{$inscripcion->inscripcionAlumno->alumnoPersona->apellidopat}}
-                            {{$inscripcion->inscripcionAlumno->alumnoPersona->apellidomat}}
+                            {{$inscripcion->inscripcionAlumno->alumnoPersona->nombre}} {{$inscripcion->inscripcionAlumno->alumnoPersona->apellidopat}} {{$inscripcion->inscripcionAlumno->alumnoPersona->apellidomat}}
                         </td>
                         <td>
                             {{$inscripcion->inscripcionParalelo->paraleloCurso->nombre}} {{$inscripcion->inscripcionParalelo->nombre}}
-                            de
-                            {{$inscripcion->inscripcionParalelo->paraleloCurso->cursoNivel->nombre}}
+                            de {{$inscripcion->inscripcionParalelo->paraleloCurso->cursoNivel->nombre}}
                         </td>
                         <td>
                             {{$inscripcion->inscripcionParalelo->paraleloTurno->nombre}}
@@ -48,10 +45,10 @@
                                id="edit-item" title="Editar"
                                data-id="{{$inscripcion->id}}"
                                data-observacion="{{$inscripcion->observacion}}"
-                               data-idcurso="{{$inscripcion->idcurso}}"
-                               data-curso="{{$inscripcion->inscripcionParalelo->paraleloCurso->cursoNivel->nombre}}"
-                               data-idalumno="{{$inscripcion->idalumno}}"
-                               data-alumno="{{$inscripcion->inscripcionAlumno->alumnoPersona->nombre}}"
+                               data-idcurso="{{$inscripcion->inscripcionParalelo->id}}"
+                               data-curso="{{$inscripcion->inscripcionParalelo->paraleloCurso->nombre}} {{$inscripcion->inscripcionParalelo->nombre}} de {{$inscripcion->inscripcionParalelo->paraleloCurso->cursoNivel->nombre}}"
+                               data-idalumno="{{$inscripcion->inscripcionAlumno->id}}"
+                               data-alumno="{{$inscripcion->inscripcionAlumno->alumnoPersona->nombre}} {{$inscripcion->inscripcionAlumno->alumnoPersona->apellidopat}} {{$inscripcion->inscripcionAlumno->alumnoPersona->apellidomat}}"
                             ></a>
                             <a class="btn btn-danger icon-bin" data-toggle="tooltip" title="Eliminar"
                                href="AdminInscripcion/{{$inscripcion->id}}/delete"
@@ -64,6 +61,7 @@
 
         </div>
     </div>
+
     <!-- Modal Gestion new -->
     <div class="modal fade col-lg-12" id="new-inscripcion" tabindex="-1" role="dialog"
          aria-labelledby="exampleModalLabel">
@@ -177,13 +175,14 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div>
-    <!-- Modal Inscripciones edit -->
+
+    <!-- Modal Gestion edit -->
     <div class="modal fade col-lg-12" id="edit-inscripciones" tabindex="-1" role="dialog"
          aria-labelledby="exampleModalLabel">
         <div class="modal-dialog" style="height: 50px;" role="document">
             <div class="modal-content card-body">
                 <div>
-                    <h5 class="modal-title">Inscripciones Inscripcion</h5>
+                    <h5 class="modal-title">Editar Inscripcion</h5>
                 </div>
                 <div class="modal-body">
                     <form data-toggle="validator" method="post" action="{{url('AdminInscripcion/edit')}}" role="form"
@@ -191,69 +190,111 @@
                         {!! csrf_field() !!}
                         <div class="panel-body">
                             <input type="hidden" class="form-control" id="pkinscripcion" name="pkinscripcion"
-                                   maxlength="40" required>
-
+                                   maxlength="40" value="{{ old('pkinscripcion') }}" required>
                             <div class="row">
                                 <div class="form-group col-md-12 pl-1">
-                                    <label for="editobservacion" class="control-label">Observacion:</label>
-                                    <input type="text" class="form-control" id="editobservacion" name="editobservacion"
-                                           maxlength="40" required>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="form-group col-md-6 pl-1">
-                                    <label for="editparalelos_id">Cursos Paralelos:</label>
-                                    <select class="form-control" id="editparalelos_id" name="editparalelos_id">
-
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-6 pl-1">
-                                    <label for="editalumno_name" class="form-label">Alumno:</label>
-                                    <input type="text" name="editalumno_name" id="editalumno_name" class="form-control"
-                                           autocomplete="off" required/>
-                                    <input type="hidden" name="editalumno_id" id="editalumno_id" class="form-control"/>
-                                    <div id="editalumnoList">
+                                    <label for="edit_alumno_name" class="form-label">Alumno:</label>
+                                    <input type="text" name="edit_alumno_name" id="edit_alumno_name"
+                                           class="form-control"
+                                           autocomplete="off" value="{{ old('edit_alumno_name') }}" required/>
+                                    <input type="hidden" name="edit_alumno_id" id="edit_alumno_id" class="form-control"
+                                           value="{{ old('edit_alumno_id') }}"/>
+                                    <div id="editAlumnoList">
                                     </div>
                                     {{ csrf_field() }}
-                                    {{--                                    <script>--}}
-                                    {{--                                        $(document).ready(function(){--}}
-                                    {{--                                            $('#editalumno_name').keyup(function(){--}}
-                                    {{--                                                var query = $(this).val();--}}
-                                    {{--                                                if(query != '')--}}
-                                    {{--                                                {--}}
-                                    {{--                                                    var _token = $('input[name="_token"]').val();--}}
-                                    {{--                                                    $.ajax({--}}
-                                    {{--                                                        url:"{{ route('AdminAlumno.fetch') }}",--}}
-                                    {{--                                                        method:"POST",--}}
-                                    {{--                                                        data:{query:query, _token:_token},--}}
-                                    {{--                                                        success:function(data){--}}
-                                    {{--                                                            $('#editalumnoList').fadeIn();--}}
-                                    {{--                                                            $('#editalumnoList').html(data);--}}
-                                    {{--                                                        }--}}
-                                    {{--                                                    });--}}
-                                    {{--                                                }--}}
-                                    {{--                                            });--}}
-                                    {{--                                            $(document).on('click', '.caja', function(){--}}
-                                    {{--                                                $('#editalumno_name').val($(this).text());--}}
-                                    {{--                                                $('#editalumno_id').val($(this).attr("id"));--}}
-                                    {{--                                                $('#editalumnoList').fadeOut();--}}
-                                    {{--                                            });--}}
-                                    {{--                                        });--}}
-                                    {{--                                    </script>--}}
+                                    <script>
+                                        $(document).ready(function () {
+                                            $('#edit_alumno_name').keyup(function () {
+                                                var query = $(this).val();
+                                                if (query != '') {
+                                                    var _token = $('input[name="_token"]').val();
+                                                    $.ajax({
+                                                        url: "{{ route('AdminAlumno.fetch') }}",
+                                                        method: "POST",
+                                                        data: {query: query, _token: _token},
+                                                        success: function (data) {
+                                                            $('#editAlumnoList').fadeIn();
+                                                            $('#editAlumnoList').html(data);
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                            $(document).on('click', '.alumno', function () {
+                                                if ($('#edit_curso_id').val() == 0) {
+                                                    $("#edit-btn-guardar").prop("disabled", true);
+                                                } else {
+                                                    $("#edit-btn-guardar").prop("disabled", false);
+                                                }
+                                                $('#edit_alumno_name').val($(this).text());
+                                                $('#edit_alumno_id').val($(this).attr("id"));
+                                                $('#editAlumnoList').fadeOut();
+                                            });
+                                        });
+                                    </script>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="form-group col-md-12 pl-1">
+                                    <label for="edit_curso_name" class="form-label">Curso:</label>
+                                    <input type="text" name="edit_curso_name" id="edit_curso_name" class="form-control"
+                                           autocomplete="off" value="{{ old('edit_curso_name') }}" required/>
+                                    <input type="hidden" name="edit_curso_id" id="edit_curso_id" class="form-control"
+                                           value="{{ old('edit_curso_id') }}"/>
+                                    <div id="editCursoList">
+                                    </div>
+                                    {{ csrf_field() }}
+                                    <script>
+                                        $(document).ready(function () {
+                                            $('#edit_curso_name').keyup(function () {
+                                                var query = $(this).val();
+                                                if (query != '') {
+                                                    var _token = $('input[name="_token"]').val();
+                                                    $.ajax({
+                                                        url: "{{ route('AdminParalelo.fetch') }}",
+                                                        method: "POST",
+                                                        data: {query: query, _token: _token},
+                                                        success: function (data) {
+                                                            $('#editCursoList').fadeIn();
+                                                            $('#editCursoList').html(data);
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                            $(document).on('click', '.paralelo', function () {
+                                                if ($('#edit_alumno_id').val() == 0) {
+                                                    $("#edit-btn-guardar").prop("disabled", true);
+                                                } else {
+                                                    $("#edit-btn-guardar").prop("disabled", false);
+                                                }
+                                                $('#edit_curso_name').val($(this).text());
+                                                $('#edit_curso_id').val($(this).attr("id"));
+                                                $('#editCursoList').fadeOut();
+                                            });
+                                        });
+                                    </script>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-12 pl-1">
+                                    <label for="edit_observacion" class="control-label">Observacion:</label>
+                                    <input type="text" class="form-control" id="edit_observacion"
+                                           name="edit_observacion" maxlength="40" value="{{ old('edit_observacion') }}"
+                                           required>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default btn-fill" data-dismiss="modal">Cerrar
+                                </button>
+                                <button type="submit" id="edit-btn-guardar" class="btn btn-primary btn-fill">Guardar
+                                </button>
+                            </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default btn-fill" data-dismiss="modal">Cerrar</button>
-                            <button type="submit" class="btn btn-primary btn-fill">Guardar</button>
-                        </div>
-
                     </form>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div>
+
     @if(!empty(Session::get('error_code')) && Session::get('error_code') == 1)
         <script>
             $(function () {
@@ -294,10 +335,13 @@
             var alumno = $(this).data("alumno");
 
             $("#pkinscripcion").val(id);
-            $("#editobservacion").val(observacion);
-            $("#editalumno_name").val(alumno);
-            $("#editalumno_id").val(idalumno);
-            $("#editparalelos_id").append('<option value="' + idcurso + '">' + curso + '</option>');
+            $("#edit_observacion").val(observacion);
+
+            $("#edit_alumno_name").val(alumno);
+            $("#edit_alumno_id").val(idalumno);
+
+            $("#edit_curso_id").val(idcurso);
+            $("#edit_curso_name").val(curso);
             $("#edit-inscripciones").modal('show');
 
         })

@@ -7,6 +7,7 @@ use App\Areas;
 use App\CursoParalelos;
 use App\Cursos;
 use App\Gestiones;
+use App\Inscripciones;
 use App\Materias;
 use App\Niveles;
 use App\Personas;
@@ -340,6 +341,38 @@ class AdminActualizarController extends Controller
             $paralelo->nombre = $nombre;
             $paralelo->cupo_maximo = $cupo;
             $paralelo->save();
+            return back();
+        }
+    }
+
+    public function inscripcionEditar(Request $request)
+    {
+        $id = $request->input('pkinscripcion');
+        $idcurso = $request->input('edit_curso_id');
+        $curso = $request->input('edit_curso_name');
+        $idalumno = $request->input('edit_alumno_id');
+        $alumno = $request->input('edit_alumno_name');
+        $observacion = $request->input('edit_observacion');
+        $validar = Validator::make($request->all(), [
+            'edit_alumno_id' => [
+                'required', Rule::unique('inscripciones', 'id_alumno')->where(function ($query) use ($idcurso) {
+                    $query->where('id_cursos_paralelos', $idcurso);
+                })->ignore($id, 'id')]
+        ]);
+        if ($validar->fails()) {
+            $notificacion = array(
+                'message' => $alumno . ' ya fue inscrito en ' . $curso,
+                'alert-type' => 'error'
+            );
+            return back()->with($notificacion)
+                ->with('error_code', 2)
+                ->withInput();
+        } else {
+            $inscripcion = Inscripciones::find($id);
+            $inscripcion->id_cursos_paralelos = $idcurso;
+            $inscripcion->id_alumno = $idalumno;
+            $inscripcion->observacion = $observacion;
+            $inscripcion->save();
             return back();
         }
     }

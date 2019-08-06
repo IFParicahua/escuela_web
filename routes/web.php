@@ -46,7 +46,7 @@ Route::get('/AdminGestion', 'AdministradorController@gestion')->name('AdminGesti
 Route::post('/AdminGestion/create', 'AdminGuardarController@GestionCreate');
 Route::post('/AdminGestion/edit', 'AdminActualizarController@gestionEditar');
 Route::get('/AdminGestion/{id}/delete', 'AdminEliminarController@gestionDelete');
-Route::get('/CerrarGestion', 'AdministradorController@gestionClose');
+Route::get('/CerrarGestion', 'AdminActualizarController@gestionClose');
 
 //TIPO CALIFICAION
 Route::get('/AdminTipoCalificacion', 'AdministradorController@tipocalificacion')->name('AdminTipoCalificacion');
@@ -101,10 +101,12 @@ Route::get('/AdminInscripcion', 'AdministradorController@inscripcion')->name('Ad
 Route::post('/AdminInscripcion/create', 'AdminGuardarController@InscripcionCreate');
 Route::post('/AdminAlumno/fetch', 'FetchController@alumnosearch')->name('AdminAlumno.fetch');
 Route::post('/AdminParalelo/fetch', 'FetchController@paralelocomplete')->name('AdminParalelo.fetch');
+Route::post('/AdminInscripcion/edit', 'AdminActualizarController@inscripcionEditar');
+Route::get('/AdminInscripcion/{id}/delete', 'AdminEliminarController@inscripcionDelete');
 
-//Route::post('/paralelo/buscar', 'AdministradorController@paralelosearch')->name('paralelo.buscar');
-//Route::post('/AdminInscripcion/edit', 'AdministradorController@inscripcionEditar');
-//Route::get('/AdminInscripcion/{id}/delete','AdministradorController@inscripcionDelete' );
+//ASIGNAR MATERIA
+Route::get('/AdminAsignarMateria', 'AdministradorController@asignarMateria')->name('AdminAsignarMateria');
+Route::get('/AdminAsignarMaterias/{id}', 'AdministradorController@asignarMaterias')->name('AdminAsignarMaterias');
 
 //
 //Route::get('/Contador', function () { return view('Contador'); });
