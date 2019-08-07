@@ -24,19 +24,20 @@
         <span class="rol">{{Session('sesion-rol')}}</span>
     </div>
     <ul>
-        <li><a href="AdminArea">Area</a></li>
-        <li><a href="AdminMateria">Materias</a></li>
-        <li><a href="AdminAsignarMateria">Asignacion de Materias</a></li>
-        <li><a href="AdminTipoCalificacion">Tipo de Calificaciones</a></li>
-        <li><a href="AdminTutor">Tutor</a></li>
-        <li><a href="AdminAlumno">Alumno</a></li>
-        <li><a href="AdminProfesor">Profesor</a></li>
-        <li><a href="AdminGestion">Gestion</a></li>
-        <li><a href="AdminNivel">Nivel</a></li>
-        <li><a href="AdminCurso">Curso</a></li>
-        <li><a href="AdminTurno">Turno</a></li>
-        <li><a href="AdminParalelo">Curso paralelo</a></li>
-        <li><a href="AdminInscripcion">Inscripcion</a></li>
+        <li><a href="/AdminArea">Area</a></li>
+        <li><a href="/AdminMateria">Materias</a></li>
+        <li><a href="/AdminMateriaCursos">Materia - Curso</a></li>
+        <li><a href="/AdminAsignarMateria">Asignacion de Materias</a></li>
+        <li><a href="/AdminTipoCalificacion">Tipo de Calificaciones</a></li>
+        <li><a href="/AdminTutor">Tutor</a></li>
+        <li><a href="/AdminAlumno">Alumno</a></li>
+        <li><a href="/AdminProfesor">Profesor</a></li>
+        <li><a href="/AdminGestion">Gestion</a></li>
+        <li><a href="/AdminNivel">Nivel</a></li>
+        <li><a href="/AdminCurso">Curso</a></li>
+        <li><a href="/AdminTurno">Turno</a></li>
+        <li><a href="/AdminParalelo">Curso paralelo</a></li>
+        <li><a href="/AdminInscripcion">Inscripcion</a></li>
         <li>
             <form action="{{url('logout')}}" method="post">
                 {!! csrf_field() !!}

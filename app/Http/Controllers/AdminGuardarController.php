@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Alumnos;
 use App\Areas;
+use App\AsignarMaterias;
 use App\CursoParalelos;
 use App\Cursos;
 use App\Gestiones;
 use App\Inscripciones;
+use App\MateriaCursos;
 use App\Materias;
 use App\Niveles;
 use App\Personas;
@@ -489,6 +491,51 @@ class AdminGuardarController extends Controller
             $inscripcion->id_cursos_paralelos = $idcurso;
             $inscripcion->id_alumno = $request->input('alumno_id');
             $inscripcion->save();
+            return back();
+        }
+    }
+
+    public function materiaCursosCreate(Request $request)
+    {
+        $materia = $request->input('materia_id');
+        $total = count($request->input('cursos'));
+        for ($i = 0; $i < $total; $i++) {
+            $materiaCurso = new MateriaCursos();
+            $materiaCurso->id_materia = $materia;
+            $materiaCurso->id_curso = $request->input('cursos.' . $i);
+            $materiaCurso->save();
+        }
+        return back();
+    }
+
+    public function asignarMateriaCreate(Request $request)
+    {
+        $idParalelo = Session('paralelo-id');
+        $idMateria = $request->input('materia_id');
+        $idProfesor = $request->input('profesor_id');
+        $materia = Materias::where('id', $idMateria)->value('nombre');
+        $profesor = $request->input('profesor_name');
+        $validar = Validator::make($request->all(), [
+            'profesor_id' => [
+                'required', Rule::unique('asignar_materias', 'id_profesores')->where(function ($query) use ($idMateria, $idParalelo) {
+                    $query->where([['id_materia', $idMateria], ['id_cursos_paralelos', $idParalelo]]);
+                })]
+        ]);
+        if ($validar->fails()) {
+            $notificacion = array(
+                'message' => $materia . ' ya fue asignada a ' . $profesor,
+                'alert-type' => 'error'
+            );
+            return back()->with($notificacion)
+                ->with('error_code', 1)
+                ->withInput();
+        } else {
+            $asignar = new AsignarMaterias();
+            $asignar->fecha_asignacion = date("Ymd");
+            $asignar->id_materia = $idMateria;
+            $asignar->id_profesores = $idProfesor;
+            $asignar->id_cursos_paralelos = $idParalelo;
+            $asignar->save();
             return back();
         }
     }

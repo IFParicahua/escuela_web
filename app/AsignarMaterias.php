@@ -6,29 +6,29 @@ use Illuminate\Database\Eloquent\Model;
 
 class AsignarMaterias extends Model
 {
-    protected $table = 'persona_roles';
+    protected $table = 'asignar_materias';
 
-    public function paraleloCurso()
+    public function asignarMateria()
     {
         return $this->belongsTo(
-            'App\Cursos',
-            'id_curso'
+            'App\Materias',
+            'id_materia'
         );
     }
 
-    public function paraleloTurno()
+    public function asignarProfesor()
     {
         return $this->belongsTo(
-            'App\Turnos',
-            'id_turno'
+            'App\Profesores',
+            'id_profesores'
         );
     }
 
-    public function paraleloGestion()
+    public function asignarParalelo()
     {
         return $this->belongsTo(
-            'App\Gestiones',
-            'id_gestion'
+            'App\CursoParalelos',
+            'id_cursos_paralelos'
         );
     }
 }

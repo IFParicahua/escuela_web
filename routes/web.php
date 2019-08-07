@@ -104,9 +104,25 @@ Route::post('/AdminParalelo/fetch', 'FetchController@paralelocomplete')->name('A
 Route::post('/AdminInscripcion/edit', 'AdminActualizarController@inscripcionEditar');
 Route::get('/AdminInscripcion/{id}/delete', 'AdminEliminarController@inscripcionDelete');
 
+//MATERIA CURSOS
+Route::get('/AdminMateriaCursos', 'AdministradorController@materiaCursos')->name('AdminMateriaCursos');
+
+Route::post('/AdminMateria/fetch', 'FetchController@materiacomplete')->name('AdminMateria.fetch');
+Route::post('/AdminCursos/fetch', 'FetchController@cursosRestantes')->name('AdminCursos.fetch');
+Route::post('/AdminCurso/complte', 'FetchController@cursocomplete')->name('AdminCurso.complte');
+Route::post('/AdminMateriaCursos/create', 'AdminGuardarController@materiaCursosCreate');
+Route::post('/AdminMateriaCursos/edit', 'AdminActualizarController@materiaCursosEditar');
+Route::get('/AdminMateriaCursos/{id}/delete', 'AdminEliminarController@materiaCursosDelete');
+
+
 //ASIGNAR MATERIA
 Route::get('/AdminAsignarMateria', 'AdministradorController@asignarMateria')->name('AdminAsignarMateria');
 Route::get('/AdminAsignarMaterias/{id}', 'AdministradorController@asignarMaterias')->name('AdminAsignarMaterias');
+Route::post('/AdminProfesor/fetch', 'FetchController@profesorsearch')->name('AdminProfesor.fetch');
+Route::post('/AdminAsignarMaterias/create', 'AdminGuardarController@asignarMateriaCreate');
+Route::post('/Materias/filter', 'FetchController@materiafilter')->name('Materias.filter');
+Route::post('/AdminAsignarMaterias/edit', 'AdminActualizarController@asignarMateriaEditar');
+Route::get('/AdminAsignarMaterias/{id}/delete', 'AdminEliminarController@asignarmateriaDelete');
 
 //
 //Route::get('/Contador', function () { return view('Contador'); });

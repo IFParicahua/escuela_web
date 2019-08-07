@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 
+use App\CursoParalelos;
 use App\Cursos;
 use App\Gestiones;
+use App\MateriaCursos;
 use App\Turnos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -141,4 +143,106 @@ class FetchController extends Controller
             echo $output;
         }
     }
+
+    public function materiacomplete(Request $request)
+    {
+        if ($request->get('query')) {
+            $query = $request->get('query');
+            $data = DB::table('materias')
+                ->join('areas', 'areas.id', '=', 'materias.id_area')
+                ->select(
+                    'materias.id as id',
+                    'materias.nombre as materias',
+                    'areas.nombre as areas'
+                )
+                ->where([['materias.nombre', 'like', "%{$query}%"]])
+                ->orWhere([['areas.nombre', 'like', "%{$query}%"]])
+                ->get();
+            $output = '<ul class="dropdown-menu" style="display:block; position:relative">';
+            foreach ($data as $row) {
+                $output .= '<li class="pl-1 materia" id="' . $row->id . '"><a href="#" style="color: #1b1e21">' . $row->areas . ' - ' . $row->materias . '</a></li>';
+            }
+            $output .= '</ul>';
+            echo $output;
+        }
+    }
+
+    public function cursocomplete(Request $request)
+    {
+        if ($request->get('query')) {
+            $query = $request->get('query');
+            $data = DB::table('cursos')
+                ->join('niveles', 'niveles.id', '=', 'cursos.id_nivel')
+                ->select(
+                    'cursos.id as id',
+                    'cursos.nombre as cursos',
+                    'niveles.nombre as niveles'
+                )
+                ->where([['cursos.nombre', 'like', "%{$query}%"]])
+                ->orWhere([['niveles.nombre', 'like', "%{$query}%"]])
+                ->get();
+            $output = '<ul class="dropdown-menu" style="display:block; position:relative">';
+            foreach ($data as $row) {
+                $output .= '<li class="pl-1 curso" id="' . $row->id . '"><a href="#" style="color: #1b1e21">' . $row->cursos . ' de ' . $row->niveles . '</a></li>';
+            }
+            $output .= '</ul>';
+            echo $output;
+        }
+    }
+
+    public function cursosRestantes(Request $request)
+    {
+        if ($request->get('query')) {
+            $query = $request->get('query');
+            $niveles = $results = DB::select('SELECT DISTINCT cursos.id_nivel, (niveles.nombre) as nombre  FROM cursos INNER JOIN niveles ON niveles.id = cursos.id_nivel where cursos.id NOT IN (SELECT materia_cursos.id_curso FROM materia_cursos WHERE materia_cursos.id_materia =?);', [$query]);
+            $cursos = $results = DB::select('SELECT * FROM cursos where cursos.id NOT IN (SELECT materia_cursos.id_curso FROM materia_cursos WHERE materia_cursos.id_materia =?);', [$query]);
+            $content = ' ';
+            foreach ($niveles as $nivel) {
+                $content .= '<div id="grado" class="form-group col-md-4 pl-1">';
+                $content .= '<p>' . $nivel->nombre . '</p>';
+                foreach ($cursos as $curso) {
+                    if ($curso->id_nivel == $nivel->id_nivel) {
+                        $content .= '<input type="checkbox" id="cursos[]" name="cursos[]" value="' . $curso->id . '">' . $curso->nombre . '<br>';
+                    }
+                }
+                $content .= '</div>';
+            }
+            $content .= ' ';
+            echo $content;
+        }
+    }
+
+    public function profesorsearch(Request $request)
+    {
+        if ($request->get('query')) {
+            $query = $request->get('query');
+            $data = DB::table('personas')
+                ->join('profesores', 'personas.id', '=', 'profesores.id_persona')
+                ->where([['ci', 'like', "%{$query}%"]])
+                ->orWhere([['nombre', 'like', "%{$query}%"]])
+                ->get();
+            $output = '<ul class="dropdown-menu" style="display:block; position:relative">';
+            foreach ($data as $row) {
+                $output .= '<li class="pl-1 profesor" id="' . $row->id . '"><a href="#" style="color: #1b1e21">' . $row->ci . ' - ' . $row->nombre . ' ' . $row->apellidopat . ' ' . $row->apellidomat . '</a></li>';
+            }
+            $output .= '</ul>';
+            echo $output;
+        }
+    }
+
+    public function materiafilter(Request $request)
+    {
+        if ($request->get('query')) {
+            $id = Session('paralelo-id');
+            $query = $request->get('query');
+            $idCurso = CursoParalelos::where('id', '=', $id)->value('id_curso');
+            $materias = MateriaCursos::where([['materia_cursos.id_curso', '=', $idCurso], ['materia_cursos.id_materia', '!=', $query]])->get();
+            $output = ' ';
+            foreach ($materias as $materia) {
+                $output .= '<option value="' . $materia->materiaMateria->id . '">' . $materia->materiaMateria->nombre . '</option>';
+            }
+            echo $output;
+        }
+    }
+
 }

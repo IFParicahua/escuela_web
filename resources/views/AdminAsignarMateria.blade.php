@@ -4,13 +4,8 @@
     <div class="col-11" style="margin: auto;">
 
         <div class="row">
-            <div class="col-md-10 bg-primary">
+            <div class="col-md-12 bg-primary">
                 <h3 style="text-align: center;color:#ffffff">Cursos</h3>
-            </div>
-            <div class="col-md-2 bg-primary" style="text-align: right;">
-                <button type="button" class="btn btn-primary icon-plus" data-toggle="modal" data-target="#new-paralelo"
-                        data-toggle="tooltip" title="Agregar" id="nuevo">Registrar
-                </button>
             </div>
         </div>
         <div class="row">

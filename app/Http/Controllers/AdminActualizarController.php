@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Alumnos;
 use App\Areas;
+use App\AsignarMaterias;
 use App\CursoParalelos;
 use App\Cursos;
 use App\Gestiones;
 use App\Inscripciones;
+use App\MateriaCursos;
 use App\Materias;
 use App\Niveles;
 use App\Personas;
@@ -373,6 +375,67 @@ class AdminActualizarController extends Controller
             $inscripcion->id_alumno = $idalumno;
             $inscripcion->observacion = $observacion;
             $inscripcion->save();
+            return back();
+        }
+    }
+
+    public function materiaCursosEditar(Request $request)
+    {
+        $id = $request->input('pkcursomateria');
+        $idcurso = $request->input('edit_curso_id');
+        $curso = $request->input('edit_curso_name');
+        $idmateria = $request->input('edit_materia_id');
+        $materia = $request->input('edit_materia_name');
+        $validar = Validator::make($request->all(), [
+            'edit_materia_id' => [
+                'required', Rule::unique('materia_cursos', 'id_materia')->where(function ($query) use ($idcurso) {
+                    $query->where('id_curso', $idcurso);
+                })->ignore($id, 'id')]
+        ]);
+        if ($validar->fails()) {
+            $notificacion = array(
+                'message' => 'Ya existe ' . $materia . ' en el curso ' . $curso,
+                'alert-type' => 'error'
+            );
+            return back()->with($notificacion)
+                ->with('error_code', 2)
+                ->withInput();
+        } else {
+            $materia = MateriaCursos::find($id);
+            $materia->id_curso = $idcurso;
+            $materia->id_materia = $idmateria;
+            $materia->save();
+            return back();
+        }
+    }
+
+    public function asignarMateriaEditar(Request $request)
+    {
+        $id = $request->input('pkasignacion');
+        $idParalelo = Session('paralelo-id');
+        $idMateria = $request->input('editar_materia_id');
+        $materia = Materias::where('id', $idMateria)->value('nombre');
+        $idProfesor = $request->input('editar_profesor_id');
+        $profesor = $request->input('editar_profesor_name');
+        $validar = Validator::make($request->all(), [
+            'editar_profesor_id' => [
+                'required', Rule::unique('asignar_materias', 'id_profesores')->where(function ($query) use ($idMateria, $idParalelo) {
+                    $query->where([['id_materia', $idMateria], ['id_cursos_paralelos', $idParalelo]]);
+                })->ignore($id, 'id')]
+        ]);
+        if ($validar->fails()) {
+            $notificacion = array(
+                'message' => $materia . ' ya fue asignada a ' . $profesor,
+                'alert-type' => 'error'
+            );
+            return back()->with($notificacion)
+                ->with('error_code', 2)
+                ->withInput();
+        } else {
+            $asignar = AsignarMaterias::find($id);
+            $asignar->id_materia = $idMateria;
+            $asignar->id_profesores = $idProfesor;
+            $asignar->save();
             return back();
         }
     }

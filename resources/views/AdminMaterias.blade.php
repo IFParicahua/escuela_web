@@ -27,7 +27,13 @@
                 @foreach ($materias as $materia)
                     <tr>
                         <td>{{$materia->nombre}}</td>
-                        <td>{{$materia->estado}}</td>
+                        <td>
+                            @if ($materia->estado == 0)
+                                Abierto
+                            @else
+                                Cerrado
+                            @endif
+                        </td>
                         <td>{{$materia->materiasAreas->nombre}}</td>
                         <td style="text-align: right;width: 114px;">
                             <a style="color: rgb(255,255,255)" class="btn btn-success btn-fill icon-pencil "
@@ -54,7 +60,7 @@
         <div class="modal-dialog" style="height: 50px;" role="document">
             <div class="modal-content card-body">
                 <div>
-                    <h5 class="modal-title">Guardar Curso Materia</h5>
+                    <h5 class="modal-title">Guardar Materia</h5>
                 </div>
                 <div class="modal-body">
                     <form data-toggle="validator" method="post" action="{{url('AdminMateria/create')}}" role="form"
@@ -96,7 +102,7 @@
         <div class="modal-dialog" style="height: 50px;" role="document">
             <div class="modal-content card-body">
                 <div>
-                    <h5 class="modal-title">Editar Curso Materia</h5>
+                    <h5 class="modal-title">Editar Materia</h5>
                 </div>
                 <div class="modal-body">
                     <form data-toggle="validator" method="post" action="{{url('AdminMateria/edit')}}" role="form"

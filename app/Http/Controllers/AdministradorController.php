@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 
 use App\Alumnos;
 use App\Areas;
+use App\AsignarMaterias;
 use App\CursoParalelos;
 use App\Cursos;
 use App\Gestiones;
 use App\Inscripciones;
+use App\MateriaCursos;
 use App\Materias;
 use App\Niveles;
 use App\Profesores;
@@ -16,6 +18,7 @@ use App\TipoCalificaciones;
 use App\Turnos;
 use App\Tutores;
 use Illuminate\Support\Facades\Crypt;
+
 
 class AdministradorController extends Controller
 {
@@ -108,10 +111,21 @@ class AdministradorController extends Controller
         return view('AdminAsignarMateria', compact('materias'));
     }
 
+    public function materiaCursos()
+    {
+        $niveles = Cursos::select('id_nivel')->distinct()->get();
+        $cursos = Cursos::all();
+        $materias_cursos = MateriaCursos::orderBy('id_curso', 'desc')->get();
+        return view('AdminMateriaCursos', compact('niveles', 'materias_cursos', 'cursos'));
+    }
     public function asignarMaterias($id)
     {
         $id = Crypt::decrypt($id);
-
-        return view('AdminAsignarMaterias', compact('id'));
+        session()->put('paralelo-id', $id);
+        $idCurso = CursoParalelos::where('id', '=', $id)->value('id_curso');
+        $materias = MateriaCursos::where('materia_cursos.id_curso', '=', $idCurso)->get();
+        $cursos = CursoParalelos::where('id', '=', $id)->get();
+        $asignaciones = AsignarMaterias::where('id_cursos_paralelos', '=', $id)->get();
+        return view('AdminAsignarMaterias', compact('asignaciones', 'cursos', 'materias'));
     }
 }

@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Alumnos;
 use App\Areas;
+use App\AsignarMaterias;
 use App\CursoParalelos;
 use App\Cursos;
 use App\Gestiones;
 use App\Inscripciones;
+use App\MateriaCursos;
 use App\Materias;
 use App\Niveles;
 use App\Personas;
@@ -211,6 +213,39 @@ class AdminEliminarController extends Controller
             $curso = $inscripcion->inscripcionParalelo->paraleloCurso->nombre . ' ' . $inscripcion->inscripcionParalelo->nombre . ' de ' . $inscripcion->inscripcionParalelo->paraleloCurso->cursoNivel->nombre;
             $notificacion = array(
                 'message' => 'La inscripcion de ' . $nombre . ' en el curso ' . $curso . ' no se puede eliminar.',
+                'alert-type' => 'error'
+            );
+            return back()->with($notificacion);
+        }
+    }
+
+    public function materiaCursosDelete($id)
+    {
+        try {
+            $materiacurso = MateriaCursos::find($id);
+            $materiacurso->delete();
+            return back();
+        } catch (QueryException $e) {
+            $materiacurso = MateriaCursos::find($id);
+            $curso = $materiacurso->materiaCurso->nombre . ' de ' . $materiacurso->materiaCurso->cursoNivel->nombre;
+            $materia = $materiacurso->materiaMateria->nombre;
+            $notificacion = array(
+                'message' => $materia . ' no se puede eliminar del curso ' . $curso,
+                'alert-type' => 'error'
+            );
+            return back()->with($notificacion);
+        }
+    }
+
+    public function asignarmateriaDelete($id)
+    {
+        try {
+            $materiacurso = AsignarMaterias::find($id);
+            $materiacurso->delete();
+            return back();
+        } catch (QueryException $e) {
+            $notificacion = array(
+                'message' => 'No se puede eliminar este dato',
                 'alert-type' => 'error'
             );
             return back()->with($notificacion);
