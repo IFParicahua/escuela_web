@@ -12,11 +12,13 @@ use App\Inscripciones;
 use App\MateriaCursos;
 use App\Materias;
 use App\Niveles;
+use App\PersonaRoles;
 use App\Personas;
 use App\Profesores;
 use App\TipoCalificaciones;
 use App\Turnos;
 use App\Tutores;
+use App\User;
 use Illuminate\Database\QueryException;
 
 class AdminEliminarController extends Controller
@@ -123,6 +125,12 @@ class AdminEliminarController extends Controller
         try {
             $tutor = Tutores::find($id);
             $tutor->delete();
+            $iduser = User::where('id_persona', '=', $tutor->tutorPersona->id)->value('id');
+            $user = User::find($iduser);
+            $user->delete();
+            $idrol = PersonaRoles::where('id_persona', '=', $tutor->tutorPersona->id)->value('id');
+            $rol = PersonaRoles::find($idrol);
+            $rol->delete();
             $persona = Personas::find($tutor->tutorPersona->id);
             $persona->delete();
             return back();
@@ -157,6 +165,12 @@ class AdminEliminarController extends Controller
         try {
             $profesor = Profesores::find($id);
             $profesor->delete();
+            $iduser = User::where('id_persona', '=', $profesor->profesorPersona->id)->value('id');
+            $user = User::find($iduser);
+            $user->delete();
+            $idrol = PersonaRoles::where('id_persona', '=', $profesor->profesorPersona->id)->value('id');
+            $rol = PersonaRoles::find($idrol);
+            $rol->delete();
             $persona = Personas::find($profesor->profesorPersona->id);
             $persona->delete();
             return back();

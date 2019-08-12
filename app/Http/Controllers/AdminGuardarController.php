@@ -12,12 +12,15 @@ use App\Inscripciones;
 use App\MateriaCursos;
 use App\Materias;
 use App\Niveles;
+use App\PersonaRoles;
 use App\Personas;
 use App\Profesores;
 use App\TipoCalificaciones;
 use App\Turnos;
 use App\Tutores;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
@@ -311,20 +314,30 @@ class AdminGuardarController extends Controller
                 ->with('error_code', 1)
                 ->withInput();
         } else {
+            $cis = $request->input('ci');
             $persona = new Personas;
             $persona->nombre = $request->input('nombre');
             $persona->apellidopat = $request->input('apaterno');
             $persona->apellidomat = $request->input('amaterno');
             $persona->direccion = $request->input('direccion');
-            $persona->ci = $request->input('ci');
+            $persona->ci = $cis;
             $persona->telefono = $request->input('telefono');
             $persona->sexo = $request->input('sexo');
             $persona->save();
-            $cis = $request->input('ci');
             $id = Personas::where('ci', $cis)->value('id');
             $tutor = new Tutores;
             $tutor->id_persona = $id;
             $tutor->save();
+            $caracter = substr($cis, 0, 4);
+            $user = new User();
+            $user->username = $cis;
+            $user->password = Hash::make($caracter);
+            $user->id_persona = $id;
+            $user->save();
+            $rol = new PersonaRoles();
+            $rol->id_persona = $id;
+            $rol->id_rol = 5;
+            $rol->save();
             return back();
         }
     }
@@ -395,6 +408,16 @@ class AdminGuardarController extends Controller
             $profesor = new Profesores();
             $profesor->id_persona = $id;
             $profesor->save();
+            $caracter = substr($cis, 0, 4);
+            $user = new User();
+            $user->username = $cis;
+            $user->password = Hash::make($caracter);
+            $user->id_persona = $id;
+            $user->save();
+            $rol = new PersonaRoles();
+            $rol->id_persona = $id;
+            $rol->id_rol = 4;
+            $rol->save();
             return back();
         }
     }
@@ -539,4 +562,5 @@ class AdminGuardarController extends Controller
             return back();
         }
     }
+
 }

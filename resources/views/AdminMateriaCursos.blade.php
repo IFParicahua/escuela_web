@@ -5,7 +5,7 @@
 
         <div class="row">
             <div class="col-md-10 bg-primary">
-                <h3 style="text-align: center;color:#ffffff">Materia asignadas a Cursos</h3>
+                <h3 style="text-align: center;color:#ffffff">Materia asignadas a Cursos Paralelo</h3>
             </div>
             <div class="col-md-2 bg-primary" style="text-align: right;">
                 <button type="button" class="btn btn-primary icon-plus" data-toggle="modal"
@@ -54,7 +54,7 @@
         <div class="modal-dialog" style="height: 50px;" role="document">
             <div class="modal-content card-body">
                 <div>
-                    <h5 class="modal-title">Guardar Curso</h5>
+                    <h5 class="modal-title">Registro de Materias en Cursos Paralelo</h5>
                 </div>
                 <div class="modal-body">
                     <form data-toggle="validator" method="post" action="{{url('AdminMateriaCursos/create')}}"
@@ -132,7 +132,7 @@
         <div class="modal-dialog" style="height: 50px;" role="document">
             <div class="modal-content card-body">
                 <div>
-                    <h5 class="modal-title">Guardar Curso</h5>
+                    <h5 class="modal-title">Editar Materias en Cursos Paralelo</h5>
                 </div>
                 <div class="modal-body">
                     <form data-toggle="validator" method="post" action="{{url('AdminMateriaCursos/edit')}}" role="form"

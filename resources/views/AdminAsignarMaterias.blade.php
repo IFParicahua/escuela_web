@@ -103,7 +103,7 @@
                             </div>
                             <div class="row">
                                 <div class="form-group col-md-12 pl-1">
-                                    <label for="materia_id">Area:</label>
+                                    <label for="materia_id">Materia:</label>
                                     <select class="form-control" id="materia_id" name="materia_id">
                                         @foreach ($materias as $materia)
                                             <option
@@ -178,7 +178,7 @@
                             </div>
                             <div class="row">
                                 <div class="form-group col-md-12 pl-1">
-                                    <label for="editar_materia_id">Area:</label>
+                                    <label for="editar_materia_id">Materia:</label>
                                     <select class="form-control" id="editar_materia_id" name="editar_materia_id">
                                         @foreach ($materias as $materia)
                                             @if($materia->id != Session::get('idmateria'))

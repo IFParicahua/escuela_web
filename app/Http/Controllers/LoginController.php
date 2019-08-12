@@ -35,7 +35,7 @@ class LoginController extends Controller
         $apellidom = Personas::where('id', Auth::user()->id_persona)->value('apellidomat');
 
         session()->put('session-user', $nombre . ' ' . $apellidop . ' ' . $apellidom);
-        $roles = PersonaRoles::with('personaRol')->where('id_persona', 1)->get();
+        $roles = PersonaRoles::where('id_persona', Auth::user()->id_persona)->get();
         return view('inicio', compact('roles'));
     }
 
