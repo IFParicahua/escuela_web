@@ -18,7 +18,7 @@ class CreateAsignarMateriasTable extends Migration
             $table->dateTime('fecha_asignacion');
             $table->unsignedBigInteger('id_materia');
             $table->foreign('id_materia')->references('id')->on('materias');
-            $table->unsignedBigInteger('id_profesores');
+            $table->unsignedBigInteger('id_profesores')->nullable();
             $table->foreign('id_profesores')->references('id')->on('profesores');
             $table->unsignedBigInteger('id_cursos_paralelos');
             $table->foreign('id_cursos_paralelos')->references('id')->on('curso_paralelos');

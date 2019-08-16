@@ -46,7 +46,7 @@
                             ></a>
                             <a class="btn btn-danger icon-bin" data-toggle="tooltip" title="Eliminar"
                                href="AdminCursos/{{$curso->id}}/delete"
-                               data-confirm="¿Estas seguro que quieres eliminar a {{$curso->nombre}}?"></a>
+                               data-confirm="¿Estas seguro que quieres desactivar {{$curso->nombre}}?"></a>
                         </td>
                     </tr>
                 @endforeach

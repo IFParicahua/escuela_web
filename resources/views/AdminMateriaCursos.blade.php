@@ -5,7 +5,7 @@
 
         <div class="row">
             <div class="col-md-10 bg-primary">
-                <h3 style="text-align: center;color:#ffffff">Materia asignadas a Cursos Paralelo</h3>
+                <h3 style="text-align: center;color:#ffffff">Materia asignadas a Cursos</h3>
             </div>
             <div class="col-md-2 bg-primary" style="text-align: right;">
                 <button type="button" class="btn btn-primary icon-plus" data-toggle="modal"
@@ -49,10 +49,11 @@
 
         </div>
     </div>
+
     <div class="modal fade col-lg-12" id="new-materia-curso" tabindex="-1" role="dialog"
-         aria-labelledby="exampleModalLabel">
-        <div class="modal-dialog" style="height: 50px;" role="document">
-            <div class="modal-content card-body">
+         aria-labelledby="exampleModalLabel" style="padding-right: 500px;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content card-body" style="width: 892px">
                 <div>
                     <h5 class="modal-title">Registro de Materias en Cursos Paralelo</h5>
                 </div>
@@ -62,38 +63,37 @@
                           id="form-new">
                         {!! csrf_field() !!}
                         <div class="panel-body">
-
                             <div class="row">
                                 <div class="form-group col-md-12 pl-1">
-                                    <label for="materia_name" class="form-label">Materia:</label>
-                                    <input type="text" name="materia_name" id="materia_name" class="form-control"
-                                           autocomplete="off" value="{{ old('materia_name') }}" required>
-                                    <input type="hidden" name="materia_id" id="materia_id" class="form-control"
-                                           value="{{ old('materia_id') }}"/>
-                                    <div id="materiaList">
+                                    <label for="curso_name" class="form-label">Curso:</label>
+                                    <input type="text" name="curso_name" id="curso_name" class="form-control"
+                                           autocomplete="off" value="{{ old('curso_name') }}" required>
+                                    <input type="hidden" name="curso_id" id="curso_id" class="form-control"
+                                           value="{{ old('curso_id') }}"/>
+                                    <div id="cursoList">
                                     </div>
                                     {{ csrf_field() }}
                                     <script>
                                         $(document).ready(function () {
-                                            $('#materia_name').keyup(function () {
+                                            $('#curso_name').keyup(function () {
                                                 var query = $(this).val();
                                                 if (query != '') {
                                                     var _token = $('input[name="_token"]').val();
                                                     $.ajax({
-                                                        url: "{{ route('AdminMateria.fetch') }}",
+                                                        url: "{{ route('AdminCurso.complte') }}",
                                                         method: "POST",
                                                         data: {query: query, _token: _token},
                                                         success: function (data) {
-                                                            $('#materiaList').fadeIn();
-                                                            $('#materiaList').html(data);
+                                                            $('#cursoList').fadeIn();
+                                                            $('#cursoList').html(data);
                                                         }
                                                     });
                                                 }
                                             });
-                                            $(document).on('click', '.materia', function () {
-                                                $('#materia_name').val($(this).text());
-                                                $('#materia_id').val($(this).attr("id"));
-                                                $('#materiaList').fadeOut();
+                                            $(document).on('click', '.curso', function () {
+                                                $('#curso_name').val($(this).text());
+                                                $('#curso_id').val($(this).attr("id"));
+                                                $('#cursoList').fadeOut();
                                                 var query = $(this).attr("id");
                                                 var _token = $('input[name="_token"]').val();
                                                 $.ajax({
@@ -110,9 +110,10 @@
                                     </script>
                                 </div>
                             </div>
+
                             <div class="row" id="listaCursos">
-                                <label style="color: red">*Debe seleccionar una materia para mostrar lista de
-                                    cursos</label>
+                                <label style="color: red">*Debe seleccionar un curso para mostrar lista de
+                                    materias</label>
                             </div>
                         </div>
                         <div class="modal-footer">

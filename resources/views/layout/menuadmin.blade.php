@@ -27,7 +27,7 @@
         <li><a href="/AdminArea">Area</a></li>
         <li><a href="/AdminMateria">Materias</a></li>
         <li><a href="/AdminMateriaCursos">Materia - Curso</a></li>
-        <li><a href="/AdminAsignarMateria">Asignacion de Materias</a></li>
+        <li><a href="/AdminAsignarMateria">Asignacion de Profesores</a></li>
         <li><a href="/AdminTipoCalificacion">Tipo de Calificaciones</a></li>
         <li><a href="/AdminTutor">Tutor</a></li>
         <li><a href="/AdminAlumno">Alumno</a></li>

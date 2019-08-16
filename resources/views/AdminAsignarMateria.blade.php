@@ -26,11 +26,10 @@
                         <td>{{$materia->nombre}}</td>
                         <td>
                             <a class="btn btn-primary" data-toggle="tooltip" title="Eliminar"
-                               href="AdminAsignarMaterias/{{encrypt($materia->id)}}"> Asignacion de Materias</a>
+                               href="AdminAsignarMaterias/{{encrypt($materia->id)}}"> Registrar</a>
                         </td>
                     </tr>
                 @endforeach
-
                 </tbody>
             </table>
 

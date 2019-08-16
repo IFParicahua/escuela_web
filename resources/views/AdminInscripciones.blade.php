@@ -9,7 +9,7 @@
             </div>
             <div class="col-md-2 bg-primary" style="text-align: right;">
                 <button type="button" class="btn btn-primary icon-plus" data-toggle="modal"
-                        data-target="#new-inscripcion" data-toggle="tooltip" title="Agregar" id="nuevo">Registrar
+                        data-target="#new-inscripcion" data-toggle="tooltip" title="Agregar" id="nuevo"> Registrar
                 </button>
             </div>
         </div>

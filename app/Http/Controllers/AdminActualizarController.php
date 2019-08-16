@@ -99,6 +99,8 @@ class AdminActualizarController extends Controller
     {
         $id = $request->input('pkTCalificacion');
         $nombre = $request->input('editnombre');
+        $inicio = $request->input('edit_inicio');
+        $fin = $request->input('edit_fin');
         $validator = Validator::make($request->all(), [
             'editnombre' => 'unique:tipo_calificaciones,nombre,' . $id . ',id'
         ]);
@@ -113,6 +115,8 @@ class AdminActualizarController extends Controller
         } else {
             $tipo = TipoCalificaciones::find($id);
             $tipo->nombre = $nombre;
+            $tipo->fecha_inicial = $inicio;
+            $tipo->fecha_final = $fin;
             $tipo->save();
             return back();
         }
@@ -413,7 +417,7 @@ class AdminActualizarController extends Controller
     {
         $id = $request->input('pkasignacion');
         $idParalelo = Session('paralelo-id');
-        $idMateria = $request->input('editar_materia_id');
+        $idMateria = AsignarMaterias::where('id', '=', $id)->value('id_materia');
         $materia = Materias::where('id', $idMateria)->value('nombre');
         $idProfesor = $request->input('editar_profesor_id');
         $profesor = $request->input('editar_profesor_name');
@@ -433,7 +437,6 @@ class AdminActualizarController extends Controller
                 ->withInput();
         } else {
             $asignar = AsignarMaterias::find($id);
-            $asignar->id_materia = $idMateria;
             $asignar->id_profesores = $idProfesor;
             $asignar->save();
             return back();

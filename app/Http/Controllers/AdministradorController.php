@@ -18,6 +18,7 @@ use App\TipoCalificaciones;
 use App\Turnos;
 use App\Tutores;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
 
 
 class AdministradorController extends Controller
@@ -102,7 +103,14 @@ class AdministradorController extends Controller
     public function inscripcion()
     {
         $inscripciones = Inscripciones::all();
-        return view('AdminInscripciones', compact('inscripciones'));
+        $cursos = CursoParalelos::all();
+        $cupos = DB::table('inscripciones')
+            ->join('curso_paralelos', 'curso_paralelos.id', '=', 'inscripciones.id_cursos_paralelos')
+            ->join('cursos', 'cursos.id', '=', 'curso_paralelos.id_curso')
+            ->select(DB::raw('COUNT(inscripciones.id_cursos_paralelos) as total'), 'curso_paralelos.id as existe')
+            ->groupBy('inscripciones.id_cursos_paralelos')
+            ->get();
+        return view('AdminInscripciones', compact('inscripciones', 'cursos', 'cupos'));
     }
 
     public function asignarMateria()
@@ -113,11 +121,10 @@ class AdministradorController extends Controller
 
     public function materiaCursos()
     {
-        $niveles = Cursos::select('id_nivel')->distinct()->get();
-        $cursos = Cursos::all();
         $materias_cursos = MateriaCursos::orderBy('id_curso', 'desc')->get();
-        return view('AdminMateriaCursos', compact('niveles', 'materias_cursos', 'cursos'));
+        return view('AdminMateriaCursos', compact('materias_cursos'));
     }
+
     public function asignarMaterias($id)
     {
         $id = Crypt::decrypt($id);

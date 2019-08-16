@@ -86,7 +86,7 @@ body {
 .table-scroll tbody {
     position: absolute;
     overflow-y: scroll;
-    height: 470px;
+    height: 430px;
 }
 
 .table-scroll tr {

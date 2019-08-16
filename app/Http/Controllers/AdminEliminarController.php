@@ -185,18 +185,10 @@ class AdminEliminarController extends Controller
 
     public function cursoDelete($id)
     {
-        try {
-            $curso = Cursos::find($id);
-            $curso->delete();
-            return back();
-        } catch (QueryException $e) {
-            $nombre = Materias::where('id', '=', $id)->value('nombre');
-            $notificacion = array(
-                'message' => 'No se pudo eliminar ' . $nombre,
-                'alert-type' => 'error'
-            );
-            return back()->with($notificacion);
-        }
+        $curso = Cursos::find($id);
+        $curso->estado = 1;
+        $curso->save();
+        return back();
     }
 
     public function paralelosDelete($id)

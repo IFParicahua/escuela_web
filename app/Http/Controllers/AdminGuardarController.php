@@ -258,12 +258,12 @@ class AdminGuardarController extends Controller
                             ->with('error_code', 1)
                             ->withInput();
                     } else {
-                        $tipogestion = new TipoCalificaciones;
-                        $tipogestion->nombre = $nombre;
-                        $tipogestion->fecha_inicial = $inicio;
-                        $tipogestion->fecha_final = $fin;
-                        $tipogestion->estado = '0';
-                        $tipogestion->save();
+                        $tipo = new TipoCalificaciones;
+                        $tipo->nombre = $nombre;
+                        $tipo->fecha_inicial = $inicio;
+                        $tipo->fecha_final = $fin;
+                        $tipo->estado = '0';
+                        $tipo->save();
                         return back();
                     }
                 }
@@ -493,6 +493,8 @@ class AdminGuardarController extends Controller
         $idcurso = $request->input('curso_id');
         $alumno = $request->input('alumno_name');
         $curso = $request->input('curso_name');
+        $restan = Inscripciones::where('id_cursos_paralelos', '=', $idcurso)->count();
+        $cupos = CursoParalelos::where('id', '=', $idcurso)->value('cupo_maximo');
         $validar = Validator::make($request->all(), [
             'alumno_id' => [
                 'required', Rule::unique('inscripciones', 'id_alumno')->where(function ($query) use ($idcurso) {
@@ -508,25 +510,43 @@ class AdminGuardarController extends Controller
                 ->with('error_code', 1)
                 ->withInput();
         } else {
-            $inscripcion = new Inscripciones();
-            $inscripcion->fecha = date("Ymd");
-            $inscripcion->observacion = $request->input('observacion');
-            $inscripcion->id_cursos_paralelos = $idcurso;
-            $inscripcion->id_alumno = $request->input('alumno_id');
-            $inscripcion->save();
-            return back();
+            if ($restan == $cupos) {
+                $notificacion = array(
+                    'message' => 'Los Cupos estan llenos',
+                    'alert-type' => 'error'
+                );
+                return back()->with($notificacion)
+                    ->with('error_code', 1)
+                    ->withInput();
+            } else {
+                $inscripcion = new Inscripciones();
+                $inscripcion->fecha = date("Ymd");
+                $inscripcion->observacion = $request->input('observacion');
+                $inscripcion->id_cursos_paralelos = $idcurso;
+                $inscripcion->id_alumno = $request->input('alumno_id');
+                $inscripcion->save();
+                return back();
+            }
         }
     }
 
     public function materiaCursosCreate(Request $request)
     {
-        $materia = $request->input('materia_id');
-        $total = count($request->input('cursos'));
+        $cursos = $request->input('curso_id');
+        $total = count($request->input('materias'));
+        $asignaciones = CursoParalelos::where('id_curso', '=', $cursos)->get();
         for ($i = 0; $i < $total; $i++) {
             $materiaCurso = new MateriaCursos();
-            $materiaCurso->id_materia = $materia;
-            $materiaCurso->id_curso = $request->input('cursos.' . $i);
+            $materiaCurso->id_materia = $request->input('materias.' . $i);
+            $materiaCurso->id_curso = $cursos;
             $materiaCurso->save();
+            foreach ($asignaciones as $asignacion) {
+                $asignar = new AsignarMaterias();
+                $asignar->fecha_asignacion = date("Ymd");
+                $asignar->id_materia = $request->input('materias.' . $i);
+                $asignar->id_cursos_paralelos = $asignacion->id;
+                $asignar->save();
+            }
         }
         return back();
     }

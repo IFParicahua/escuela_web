@@ -178,8 +178,8 @@ class FetchController extends Controller
                     'cursos.nombre as cursos',
                     'niveles.nombre as niveles'
                 )
-                ->where([['cursos.nombre', 'like', "%{$query}%"]])
-                ->orWhere([['niveles.nombre', 'like', "%{$query}%"]])
+                ->where([['cursos.estado', '=', '0'], ['cursos.nombre', 'like', "%{$query}%"]])
+                ->orWhere([['cursos.estado', '=', '0'], ['niveles.nombre', 'like', "%{$query}%"]])
                 ->get();
             $output = '<ul class="dropdown-menu" style="display:block; position:relative">';
             foreach ($data as $row) {
@@ -194,15 +194,15 @@ class FetchController extends Controller
     {
         if ($request->get('query')) {
             $query = $request->get('query');
-            $niveles = $results = DB::select('SELECT DISTINCT cursos.id_nivel, (niveles.nombre) as nombre  FROM cursos INNER JOIN niveles ON niveles.id = cursos.id_nivel where cursos.id NOT IN (SELECT materia_cursos.id_curso FROM materia_cursos WHERE materia_cursos.id_materia =?);', [$query]);
-            $cursos = $results = DB::select('SELECT * FROM cursos where cursos.id NOT IN (SELECT materia_cursos.id_curso FROM materia_cursos WHERE materia_cursos.id_materia =?);', [$query]);
+            $areas = $results = DB::select('SELECT DISTINCT materias.id_area, (areas.nombre) as nombre  FROM materias INNER JOIN areas ON areas.id = materias.id_area where materias.id NOT IN (SELECT materia_cursos.id_materia FROM materia_cursos WHERE materia_cursos.id_curso =?);', [$query]);
+            $materias = $results = DB::select('SELECT * FROM materias where materias.id NOT IN (SELECT materia_cursos.id_materia FROM materia_cursos WHERE materia_cursos.id_curso =?);', [$query]);
             $content = ' ';
-            foreach ($niveles as $nivel) {
-                $content .= '<div id="grado" class="form-group col-md-4 pl-1">';
-                $content .= '<p>' . $nivel->nombre . '</p>';
-                foreach ($cursos as $curso) {
-                    if ($curso->id_nivel == $nivel->id_nivel) {
-                        $content .= '<input type="checkbox" id="cursos[]" name="cursos[]" value="' . $curso->id . '">' . $curso->nombre . '<br>';
+            foreach ($areas as $area) {
+                $content .= '<div id="grado" class="form-group col-md-3 pl-1">';
+                $content .= '<p>' . $area->nombre . '</p>';
+                foreach ($materias as $materia) {
+                    if ($materia->id_area == $area->id_area) {
+                        $content .= '<input type="checkbox" id="materias[]" name="materias[]" value="' . $materia->id . '">' . $materia->nombre . '<br>';
                     }
                 }
                 $content .= '</div>';
