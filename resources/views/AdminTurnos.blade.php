@@ -1,5 +1,5 @@
 @extends('layout.menuadmin')
-@section('content')
+c
 
     <div class="col-11" style="margin: auto;">
 

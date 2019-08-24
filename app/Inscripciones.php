@@ -23,4 +23,13 @@ class Inscripciones extends Model
             'id_cursos_paralelos'
         );
     }
+
+    public function calificaciones()
+    {
+        return $this->hasMany(
+            'App\Calificaciones',
+            'id_inscripcion',
+            'id'
+        );
+    }
 }
