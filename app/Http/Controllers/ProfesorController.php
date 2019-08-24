@@ -41,7 +41,7 @@ class ProfesorController extends Controller
             }
             $tabla .= '</div></div>';
             $tabla .= '<div class="row"><table class="table table-scroll table-striped" style="background:#ffffff;"><thead class="bg-primary" style="color:#ffffff">';
-            $tabla .= '<tr><th scope="col">Alumno</th><th scope="col">' . $bimestre . '</th><th scope="col"></th></tr></thead><tbody>';
+            $tabla .= '<tr><th scope="col">Alumnos</th><th scope="col">' . $bimestre . '</th><th scope="col"></th></tr></thead><tbody>';
             foreach ($inscripciones as $inscripcion) {
                 $tabla .= '<tr>';
                 $tabla .= '<td>' . $inscripcion->inscripcionAlumno->alumnoPersona->nombre . ' ' . $inscripcion->inscripcionAlumno->alumnoPersona->apellidopat . ' ' . $inscripcion->inscripcionAlumno->alumnoPersona->apellidomat . '</td>';
