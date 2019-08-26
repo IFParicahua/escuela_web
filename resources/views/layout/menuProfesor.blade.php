@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('css/stylesub.css') }}"/>
     <link rel="stylesheet" href="{{ asset('style.css') }}"/>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     {{-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> --}}
@@ -13,8 +13,6 @@
 
     <link rel="stylesheet" href="{{ asset('boostrap/css/bootstrap.min.css') }}"/>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css">
-
-
     <title>dashboard</title>
 </head>
 <body>
@@ -25,7 +23,12 @@
     </div>
     @yield('content-menu')
 </div>
-<div class="contenido">
+<div class="contenido" style="
+    background-image: url({{ asset('O6VPZL0.jpg') }});
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-color: #464646;">
     <img src="{{ asset('menuicon.png') }}" style="width: 40px" class="menu-bar">
     @yield('content')
 </div>

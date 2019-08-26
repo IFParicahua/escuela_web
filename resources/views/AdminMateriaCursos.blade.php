@@ -27,14 +27,14 @@
                 @foreach ($materias_cursos as $materias_curso)
                     <tr>
                         <td>{{$materias_curso->materiaCurso->nombre}}
-                            de {{$materias_curso->materiaCurso->cursoNivel->nombre}}</td>
+                            de nivel {{$materias_curso->materiaCurso->cursoNivel->nombre}}</td>
                         <td style="text-align: center">{{$materias_curso->materiaMateria->nombre}}</td>
                         <td style="text-align: center">
                             <a style="color: rgb(255,255,255)" class="btn btn-success btn-fill icon-pencil "
                                id="edit-item" title="Editar"
                                data-id="{{$materias_curso->id}}"
                                data-idcurso="{{$materias_curso->materiaCurso->id}}"
-                               data-curso="{{$materias_curso->materiaCurso->nombre}} de {{$materias_curso->materiaCurso->cursoNivel->nombre}}"
+                               data-curso="{{$materias_curso->materiaCurso->nombre}} de nivel {{$materias_curso->materiaCurso->cursoNivel->nombre}}"
                                data-idmateria="{{$materias_curso->materiaMateria->id}}"
                                data-materia="{{$materias_curso->materiaMateria->nombre}}"
                             ></a>

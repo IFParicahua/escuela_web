@@ -161,7 +161,7 @@
                                 <div id="observacion" class="form-group col-md-12 pl-1">
                                     <label for="observacion" class="control-label">Observacion:</label>
                                     <input type="text" class="form-control" id="observacion" name="observacion"
-                                           maxlength="40" value="{{ old('observacion') }}" required>
+                                           maxlength="40" value="Sin Observacion" required>
                                 </div>
                             </div>
                             <div class="modal-footer">

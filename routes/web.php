@@ -117,6 +117,7 @@ Route::get('/AdminMateriaCursos/{id}/delete', 'AdminEliminarController@materiaCu
 //Admin-ASIGNAR MATERIA
 Route::get('/AdminAsignarMateria', 'AdministradorController@asignarMateria')->name('AdminAsignarMateria');
 Route::get('/AdminAsignarMaterias/{id}', 'AdministradorController@asignarMaterias')->name('AdminAsignarMaterias');
+
 Route::post('/AdminProfesor/fetch', 'FetchController@profesorsearch')->name('AdminProfesor.fetch');
 Route::post('/AdminAsignarMaterias/create', 'AdminGuardarController@asignarMateriaCreate');
 Route::post('/Materias/filter', 'FetchController@materiafilter')->name('Materias.filter');
@@ -126,7 +127,7 @@ Route::get('/AdminAsignarMaterias/{id}/delete', 'AdminEliminarController@asignar
 //PROFESOR
 Route::get('/Profesor', 'ProfesorController@index');
 Route::post('/Profesor/Curso', 'ProfesorController@profesorCurso')->name('Profesor.Curso');
-Route::post('/ProfesorNota/edit', 'ProfesorController@notaEditar');
+Route::post('/ProfesorNota/edit', 'ProfesorController@notaEditar')->name('ProfesorNota.edit');
 
 //Route::get('/Contador', function () { return view('Contador'); });
 //Route::get('/Regente', function () { return view('Regente'); });

@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-md-11 bg-primary">
                 @foreach( $cursos as $curso)
-                    <h3 style="text-align: center;color:#ffffff">{{$curso->paraleloCurso->nombre.' '.$curso->nombre.' de '.$curso->paraleloCurso->cursoNivel->nombre}}</h3>
+                    <h3 style="text-align: center;color:#ffffff">{{$curso->paraleloCurso->nombre.' '.$curso->nombre.' de nivel '.$curso->paraleloCurso->cursoNivel->nombre}}</h3>
                 @endforeach
             </div>
             <div class="col-md-1 bg-primary">

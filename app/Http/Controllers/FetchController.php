@@ -79,7 +79,7 @@ class FetchController extends Controller
             $cursos = Cursos::where('id', '!=', $query)->get();
             $output = ' ';
             foreach ($cursos as $curso) {
-                $output .= '<option value="' . $curso->id . '">' . $curso->nombre . ' de ' . $curso->cursoNivel->nombre . '</option>';
+                $output .= '<option value="' . $curso->id . '">' . $curso->nombre . ' de nivel ' . $curso->cursoNivel->nombre . '</option>';
             }
             echo $output;
         }
@@ -106,6 +106,8 @@ class FetchController extends Controller
                 ->join('alumnos', 'personas.id', '=', 'alumnos.id_persona')
                 ->where([['ci', 'like', "%{$query}%"]])
                 ->orWhere([['nombre', 'like', "%{$query}%"]])
+                ->orWhere([['apellidopat', 'like', "%{$query}%"]])
+                ->orWhere([['apellidomat', 'like', "%{$query}%"]])
                 ->get();
             $output = '<ul class="dropdown-menu" style="display:block; position:relative">';
             foreach ($data as $row) {
@@ -137,7 +139,7 @@ class FetchController extends Controller
                 ->get();
             $output = '<ul class="dropdown-menu" style="display:block; position:relative">';
             foreach ($data as $row) {
-                $output .= '<li class="pl-1 paralelo" id="' . $row->id . '"><a href="#" style="color: #1b1e21">' . $row->curso . ' ' . $row->paralelo . ' de ' . $row->nivel . ' turno ' . $row->turno . '</a></li>';
+                $output .= '<li class="pl-1 paralelo" id="' . $row->id . '"><a href="#" style="color: #1b1e21">' . $row->curso . ' ' . $row->paralelo . ' de nivel ' . $row->nivel . ' turno ' . $row->turno . '</a></li>';
             }
             $output .= '</ul>';
             echo $output;
@@ -183,7 +185,7 @@ class FetchController extends Controller
                 ->get();
             $output = '<ul class="dropdown-menu" style="display:block; position:relative">';
             foreach ($data as $row) {
-                $output .= '<li class="pl-1 curso" id="' . $row->id . '"><a href="#" style="color: #1b1e21">' . $row->cursos . ' de ' . $row->niveles . '</a></li>';
+                $output .= '<li class="pl-1 curso" id="' . $row->id . '"><a href="#" style="color: #1b1e21">' . $row->cursos . ' de nivel ' . $row->niveles . '</a></li>';
             }
             $output .= '</ul>';
             echo $output;

@@ -125,14 +125,23 @@ class AdministradorController extends Controller
         return view('AdminMateriaCursos', compact('materias_cursos'));
     }
 
-    public function asignarMaterias($id)
+    public function asignarMaterias($ids)
     {
-        $id = Crypt::decrypt($id);
-        session()->put('paralelo-id', $id);
-        $idCurso = CursoParalelos::where('id', '=', $id)->value('id_curso');
-        $materias = MateriaCursos::where('materia_cursos.id_curso', '=', $idCurso)->get();
-        $cursos = CursoParalelos::where('id', '=', $id)->get();
-        $asignaciones = AsignarMaterias::where('id_cursos_paralelos', '=', $id)->get();
-        return view('AdminAsignarMaterias', compact('asignaciones', 'cursos', 'materias'));
+
+        try {
+            $id = Crypt::decrypt($ids);
+            session()->put('paralelo-id', $id);
+            $idCurso = CursoParalelos::where('id', '=', $id)->value('id_curso');
+            $materias = MateriaCursos::where('materia_cursos.id_curso', '=', $idCurso)->get();
+            $cursos = CursoParalelos::where('id', '=', $id)->get();
+            $asignaciones = AsignarMaterias::where('id_cursos_paralelos', '=', $id)->get();
+            return view('AdminAsignarMaterias', compact('asignaciones', 'cursos', 'materias'));
+        } catch (\Exception $e) {
+            $notificacion = array(
+                'message' => 'Pagina no identificada.',
+                'alert-type' => 'error'
+            );
+            return view('errors.404');
+        }
     }
 }

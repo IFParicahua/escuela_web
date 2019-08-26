@@ -41,7 +41,7 @@
         <li>
             <form action="{{url('logout')}}" method="post">
                 {!! csrf_field() !!}
-                <button type="submit" class="btn icon-enter"> Cerrar sesion</button>
+                <button type="submit" class="btn"> Cerrar sesion <span class="btn icon-enter"></span></button>
             </form>
         </li>
     </ul>

@@ -13,7 +13,7 @@ class NivelSeeder extends Seeder
     {
         DB::table('niveles')->insert([
             [
-                'nombre' => 'Nidito',
+                'nombre' => 'Inicial',
                 'estado' => '0'
             ], [
                 'nombre' => 'Primaria',

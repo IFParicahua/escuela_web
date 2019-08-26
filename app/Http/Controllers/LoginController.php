@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use App\PersonaRoles;
 use App\Personas;
+use App\TipoCalificaciones;
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
@@ -16,6 +17,24 @@ class LoginController extends Controller
             'password' => 'required|string',
         ]);
         if (Auth::attempt($credentials)) {
+            $fecha = date("Ymd");
+            $bimestre = TipoCalificaciones::where(([
+                ['fecha_inicial', '<=', $fecha],
+                ['fecha_final', '>=', $fecha],
+            ]))->value('estado');
+            $idbimestre = TipoCalificaciones::where(([
+                ['fecha_inicial', '<=', $fecha],
+                ['fecha_final', '>=', $fecha],
+            ]))->value('id');
+            $activo = TipoCalificaciones::where('estado', '=', 0)->value('id');
+            if ($bimestre == 1) {
+                $estados = TipoCalificaciones::find($activo);
+                $estados->estado = 1;
+                $estados->save();
+                $estados = TipoCalificaciones::find($idbimestre);
+                $estados->estado = 0;
+                $estados->save();
+            }
             return redirect('/inicio');
         } else {
             return back()->withErrors(['username' => trans('auth.failed')])->withInput(request(['username']));
@@ -25,6 +44,7 @@ class LoginController extends Controller
     public function logout()
     {
         Auth::logout();
+        session()->flush();
         return redirect('/');
     }
 

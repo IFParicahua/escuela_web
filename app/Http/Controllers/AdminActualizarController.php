@@ -16,6 +16,7 @@ use App\Personas;
 use App\TipoCalificaciones;
 use App\Turnos;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
@@ -37,10 +38,22 @@ class AdminActualizarController extends Controller
                 ->with('error_code', 2)
                 ->withInput();
         } else {
-            $area = Areas::find($id);
-            $area->nombre = $nombre;
-            $area->save();
-            return back();
+
+            try {
+                $area = Areas::find($id);
+                $area->nombre = $nombre;
+                $area->save();
+                return back();
+            } catch (\Exception $e) {
+                DB::rollback();
+                $notificacion = array(
+                    'message' => 'Ocurrio un error',
+                    'alert-type' => 'error'
+                );
+                return back()->with($notificacion)
+                    ->with('error_code', 2)
+                    ->withInput();
+            }
         }
     }
     public function nivelEditar(Request $request)
@@ -59,10 +72,22 @@ class AdminActualizarController extends Controller
                 ->with('error_code', 2)
                 ->withInput();
         } else {
-            $nivel = Niveles::find($id);
-            $nivel->nombre = $nombre;
-            $nivel->save();
-            return back();
+
+            try {
+                $nivel = Niveles::find($id);
+                $nivel->nombre = $nombre;
+                $nivel->save();
+                return back();
+            } catch (\Exception $e) {
+                DB::rollback();
+                $notificacion = array(
+                    'message' => 'Ocurrio un error',
+                    'alert-type' => 'error'
+                );
+                return back()->with($notificacion)
+                    ->with('error_code', 2)
+                    ->withInput();
+            }
         }
     }
     public function turnoEditar(Request $request)
@@ -81,19 +106,44 @@ class AdminActualizarController extends Controller
                 ->with('error_code', 2)
                 ->withInput();
         } else {
-            $turno = Turnos::find($id);
-            $turno->nombre = $nombre;
-            $turno->save();
-            return back();
+
+            try {
+                $turno = Turnos::find($id);
+                $turno->nombre = $nombre;
+                $turno->save();
+                return back();
+            } catch (\Exception $e) {
+                DB::rollback();
+                $notificacion = array(
+                    'message' => 'Ocurrio un error',
+                    'alert-type' => 'error'
+                );
+                return back()->with($notificacion)
+                    ->with('error_code', 2)
+                    ->withInput();
+            }
         }
     }
     public function gestionEditar(Request $request)
     {
-        $id = $request->input('pkgestion');
-        $gestion = Gestiones::find($id);
-        $gestion->descripcion = $request->input('editdescripcion');
-        $gestion->save();
-        return back();
+
+        try {
+            $id = $request->input('pkgestion');
+            $gestion = Gestiones::find($id);
+            $gestion->descripcion = $request->input('editdescripcion');
+            $gestion->save();
+            return back();
+        } catch (\Exception $e) {
+            DB::rollback();
+            $notificacion = array(
+                'message' => 'Ocurrio un error',
+                'alert-type' => 'error'
+            );
+            return back()->with($notificacion)
+                ->with('error_code', 2)
+                ->withInput();
+        }
+
     }
     public function TcalificacionEditar(Request $request)
     {
@@ -113,21 +163,46 @@ class AdminActualizarController extends Controller
                 ->with('error_code', 2)
                 ->withInput();
         } else {
-            $tipo = TipoCalificaciones::find($id);
-            $tipo->nombre = $nombre;
-            $tipo->fecha_inicial = $inicio;
-            $tipo->fecha_final = $fin;
-            $tipo->save();
-            return back();
+
+            try {
+                $tipo = TipoCalificaciones::find($id);
+                $tipo->nombre = $nombre;
+                $tipo->fecha_inicial = $inicio;
+                $tipo->fecha_final = $fin;
+                $tipo->save();
+                return back();
+            } catch (\Exception $e) {
+                DB::rollback();
+                $notificacion = array(
+                    'message' => 'Ocurrio un error',
+                    'alert-type' => 'error'
+                );
+                return back()->with($notificacion)
+                    ->with('error_code', 2)
+                    ->withInput();
+            }
+
         }
     }
     public function gestionClose()
     {
-        $id = Gestiones::max('id');
-        $gestion = Gestiones::find($id);
-        $gestion->estado = '1';
-        $gestion->save();
-        return back();
+
+        try {
+            $id = Gestiones::max('id');
+            $gestion = Gestiones::find($id);
+            $gestion->estado = '1';
+            $gestion->save();
+            return back();
+        } catch (\Exception $e) {
+            DB::rollback();
+            $notificacion = array(
+                'message' => 'Ocurrio un error',
+                'alert-type' => 'error'
+            );
+            return back()->with($notificacion)
+                ->with('error_code', 2)
+                ->withInput();
+        }
     }
     public function materiaEditar(Request $request)
     {
@@ -150,12 +225,25 @@ class AdminActualizarController extends Controller
                 ->with('error_code', 2)->with('idarea', $idarea)->with('area', $area)
                 ->withInput();
         } else {
-            $materia = Materias::find($id);
-            $materia->nombre = $nombre;
-            $materia->id_area = $idarea;
-            $materia->estado = '0';
-            $materia->save();
-            return back();
+
+            try {
+                $materia = Materias::find($id);
+                $materia->nombre = $nombre;
+                $materia->id_area = $idarea;
+                $materia->estado = '0';
+                $materia->save();
+                return back();
+            } catch (\Exception $e) {
+                DB::rollback();
+                $notificacion = array(
+                    'message' => 'Ocurrio un error',
+                    'alert-type' => 'error'
+                );
+                return back()->with($notificacion)
+                    ->with('error_code', 2)
+                    ->withInput();
+            }
+
         }
     }
     public function tutorEditar(Request $request)
@@ -185,16 +273,28 @@ class AdminActualizarController extends Controller
                 ->with(compact('dev_id_1', 'dev_id_2', 'dev_name_1', 'dev_name_2'))
                 ->withInput();
         } else {
-            $persona = Personas::find($id);
-            $persona->nombre = $request->input('editnombre');
-            $persona->apellidopat = $request->input('editapaterno');
-            $persona->apellidomat = $request->input('editamaterno');
-            $persona->direccion = $request->input('editdireccion');
-            $persona->ci = $request->input('editci');
-            $persona->telefono = $request->input('edittelefono');
-            $persona->sexo = $request->input('editsexo');
-            $persona->save();
-            return back();
+
+            try {
+                $persona = Personas::find($id);
+                $persona->nombre = $request->input('editnombre');
+                $persona->apellidopat = $request->input('editapaterno');
+                $persona->apellidomat = $request->input('editamaterno');
+                $persona->direccion = $request->input('editdireccion');
+                $persona->ci = $request->input('editci');
+                $persona->telefono = $request->input('edittelefono');
+                $persona->sexo = $request->input('editsexo');
+                $persona->save();
+                return back();
+            } catch (\Exception $e) {
+                DB::rollback();
+                $notificacion = array(
+                    'message' => 'Ocurrio un error',
+                    'alert-type' => 'error'
+                );
+                return back()->with($notificacion)
+                    ->with('error_code', 2)
+                    ->withInput();
+            }
         }
     }
     public function alumnoEditar(Request $request)
@@ -226,21 +326,33 @@ class AdminActualizarController extends Controller
                 ->with(compact('dev_id_1', 'dev_id_2', 'dev_name_1', 'dev_name_2'))
                 ->withInput();
         } else {
-            $persona = Personas::find($id);
-            $persona->nombre = $request->input('editnombre');
-            $persona->apellidopat = $request->input('editpaterno');
-            $persona->apellidomat = $request->input('editmaterno');
-            $persona->direccion = $request->input('editdireccion');
-            $persona->ci = $request->input('editci');
-            $persona->telefono = $request->input('edittelefono');
-            $persona->sexo = $request->input('editsexo');
-            $persona->save();
-            $alumno = Alumnos::find($idAlumno);
-            $alumno->nacimiento = $request->input('editnacimiento');
-            $alumno->idtutor = $request->input('editutor_id');
-            $alumno->rude = $request->input('editrude');
-            $alumno->save();
-            return back();
+
+            try {
+                $persona = Personas::find($id);
+                $persona->nombre = $request->input('editnombre');
+                $persona->apellidopat = $request->input('editpaterno');
+                $persona->apellidomat = $request->input('editmaterno');
+                $persona->direccion = $request->input('editdireccion');
+                $persona->ci = $request->input('editci');
+                $persona->telefono = $request->input('edittelefono');
+                $persona->sexo = $request->input('editsexo');
+                $persona->save();
+                $alumno = Alumnos::find($idAlumno);
+                $alumno->nacimiento = $request->input('editnacimiento');
+                $alumno->idtutor = $request->input('editutor_id');
+                $alumno->rude = $request->input('editrude');
+                $alumno->save();
+                return back();
+            } catch (\Exception $e) {
+                DB::rollback();
+                $notificacion = array(
+                    'message' => 'Ocurrio un error',
+                    'alert-type' => 'error'
+                );
+                return back()->with($notificacion)
+                    ->with('error_code', 2)
+                    ->withInput();
+            }
         }
     }
     public function profesorEditar(Request $request)
@@ -270,16 +382,29 @@ class AdminActualizarController extends Controller
                 ->with(compact('dev_id_1', 'dev_id_2', 'dev_name_1', 'dev_name_2'))
                 ->withInput();
         } else {
-            $persona = Personas::find($id);
-            $persona->nombre = $request->input('editnombre');
-            $persona->apellidopat = $request->input('editpaterno');
-            $persona->apellidomat = $request->input('editmaterno');
-            $persona->direccion = $request->input('editdireccion');
-            $persona->ci = $request->input('editci');
-            $persona->telefono = $request->input('edittelefono');
-            $persona->sexo = $request->input('editsexo');
-            $persona->save();
-            return back();
+
+            try {
+                $persona = Personas::find($id);
+                $persona->nombre = $request->input('editnombre');
+                $persona->apellidopat = $request->input('editpaterno');
+                $persona->apellidomat = $request->input('editmaterno');
+                $persona->direccion = $request->input('editdireccion');
+                $persona->ci = $request->input('editci');
+                $persona->telefono = $request->input('edittelefono');
+                $persona->sexo = $request->input('editsexo');
+                $persona->save();
+                return back();
+            } catch (\Exception $e) {
+                DB::rollback();
+                $notificacion = array(
+                    'message' => 'Ocurrio un error',
+                    'alert-type' => 'error'
+                );
+                return back()->with($notificacion)
+                    ->with('error_code', 2)
+                    ->withInput();
+            }
+
         }
     }
     public function cursoEditar(Request $request)
@@ -303,15 +428,27 @@ class AdminActualizarController extends Controller
                 ->with('error_code', 2)->with('idnivel', $idnivel)->with('nivel', $area)
                 ->withInput();
         } else {
-            $curso = Cursos::find($id);
-            $curso->nombre = $nombre;
-            $curso->grado = $request->input('editgrado');
-            $curso->id_nivel = $idnivel;
-            $curso->save();
-            return back();
+
+            try {
+                $curso = Cursos::find($id);
+                $curso->nombre = $nombre;
+                $curso->grado = $request->input('editgrado');
+                $curso->id_nivel = $idnivel;
+                $curso->save();
+                return back();
+            } catch (\Exception $e) {
+                DB::rollback();
+                $notificacion = array(
+                    'message' => 'Ocurrio un error',
+                    'alert-type' => 'error'
+                );
+                return back()->with($notificacion)
+                    ->with('error_code', 2)
+                    ->withInput();
+            }
+
         }
     }
-
     public function paraleloEditar(Request $request)
     {
         $id = $request->input('pkparalelo');
@@ -340,17 +477,28 @@ class AdminActualizarController extends Controller
                 ->with('error_code', 2)->with(compact('idgestion', 'idturno', 'idcurso', 'gestion', 'turno', 'curso'))
                 ->withInput();
         } else {
-            $paralelo = CursoParalelos::find($id);
-            $paralelo->id_gestion = $idgestion;
-            $paralelo->id_turno = $idturno;
-            $paralelo->id_curso = $idcurso;
-            $paralelo->nombre = $nombre;
-            $paralelo->cupo_maximo = $cupo;
-            $paralelo->save();
-            return back();
+
+            try {
+                $paralelo = CursoParalelos::find($id);
+                $paralelo->id_gestion = $idgestion;
+                $paralelo->id_turno = $idturno;
+                $paralelo->id_curso = $idcurso;
+                $paralelo->nombre = $nombre;
+                $paralelo->cupo_maximo = $cupo;
+                $paralelo->save();
+                return back();
+            } catch (\Exception $e) {
+                DB::rollback();
+                $notificacion = array(
+                    'message' => 'Ocurrio un error',
+                    'alert-type' => 'error'
+                );
+                return back()->with($notificacion)
+                    ->with('error_code', 2)
+                    ->withInput();
+            }
         }
     }
-
     public function inscripcionEditar(Request $request)
     {
         $id = $request->input('pkinscripcion');
@@ -374,15 +522,27 @@ class AdminActualizarController extends Controller
                 ->with('error_code', 2)
                 ->withInput();
         } else {
-            $inscripcion = Inscripciones::find($id);
-            $inscripcion->id_cursos_paralelos = $idcurso;
-            $inscripcion->id_alumno = $idalumno;
-            $inscripcion->observacion = $observacion;
-            $inscripcion->save();
-            return back();
+
+            try {
+                $inscripcion = Inscripciones::find($id);
+                $inscripcion->id_cursos_paralelos = $idcurso;
+                $inscripcion->id_alumno = $idalumno;
+                $inscripcion->observacion = $observacion;
+                $inscripcion->save();
+                return back();
+            } catch (\Exception $e) {
+                DB::rollback();
+                $notificacion = array(
+                    'message' => 'Ocurrio un error',
+                    'alert-type' => 'error'
+                );
+                return back()->with($notificacion)
+                    ->with('error_code', 2)
+                    ->withInput();
+            }
+
         }
     }
-
     public function materiaCursosEditar(Request $request)
     {
         $id = $request->input('pkcursomateria');
@@ -405,14 +565,26 @@ class AdminActualizarController extends Controller
                 ->with('error_code', 2)
                 ->withInput();
         } else {
-            $materia = MateriaCursos::find($id);
-            $materia->id_curso = $idcurso;
-            $materia->id_materia = $idmateria;
-            $materia->save();
-            return back();
+
+            try {
+                $materia = MateriaCursos::find($id);
+                $materia->id_curso = $idcurso;
+                $materia->id_materia = $idmateria;
+                $materia->save();
+                return back();
+            } catch (\Exception $e) {
+                DB::rollback();
+                $notificacion = array(
+                    'message' => 'Ocurrio un error',
+                    'alert-type' => 'error'
+                );
+                return back()->with($notificacion)
+                    ->with('error_code', 2)
+                    ->withInput();
+            }
+
         }
     }
-
     public function asignarMateriaEditar(Request $request)
     {
         $id = $request->input('pkasignacion');
@@ -436,10 +608,22 @@ class AdminActualizarController extends Controller
                 ->with('error_code', 2)
                 ->withInput();
         } else {
-            $asignar = AsignarMaterias::find($id);
-            $asignar->id_profesores = $idProfesor;
-            $asignar->save();
-            return back();
+
+            try {
+                $asignar = AsignarMaterias::find($id);
+                $asignar->id_profesores = $idProfesor;
+                $asignar->save();
+                return back();
+            } catch (\Exception $e) {
+                DB::rollBack();
+                $notificacion = array(
+                    'message' => 'Ocurrio un error',
+                    'alert-type' => 'error'
+                );
+                return back()->with($notificacion)
+                    ->with('error_code', 2)
+                    ->withInput();
+            }
         }
     }
 }
