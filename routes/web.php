@@ -129,9 +129,12 @@ Route::get('/Profesor', 'ProfesorController@index');
 Route::post('/Profesor/Curso', 'ProfesorController@profesorCurso')->name('Profesor.Curso');
 Route::post('/ProfesorNota/edit', 'ProfesorController@notaEditar')->name('ProfesorNota.edit');
 
-//Route::get('/Contador', function () { return view('Contador'); });
+Route::get('/Contador', 'ContadorController@index');
+
 //Route::get('/Regente', function () { return view('Regente'); });
-//Route::get('/Padre', function () { return view('Padre'); });
+Route::get('/Padre', 'TutorController@index');
+Route::post('/Tutor/Alumno', 'TutorController@tutoAlumno')->name('Tutor.Alumno');
+Route::post('/Alumno/Comportamiento', 'TutorController@alumnoComportamiento')->name('Alumno.Comportamiento');
 
 
 

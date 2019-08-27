@@ -38,7 +38,7 @@ class AdminActualizarController extends Controller
                 ->with('error_code', 2)
                 ->withInput();
         } else {
-
+            DB::beginTransaction();
             try {
                 $area = Areas::find($id);
                 $area->nombre = $nombre;
@@ -72,7 +72,7 @@ class AdminActualizarController extends Controller
                 ->with('error_code', 2)
                 ->withInput();
         } else {
-
+            DB::beginTransaction();
             try {
                 $nivel = Niveles::find($id);
                 $nivel->nombre = $nombre;
@@ -106,7 +106,7 @@ class AdminActualizarController extends Controller
                 ->with('error_code', 2)
                 ->withInput();
         } else {
-
+            DB::beginTransaction();
             try {
                 $turno = Turnos::find($id);
                 $turno->nombre = $nombre;
@@ -126,7 +126,7 @@ class AdminActualizarController extends Controller
     }
     public function gestionEditar(Request $request)
     {
-
+        DB::beginTransaction();
         try {
             $id = $request->input('pkgestion');
             $gestion = Gestiones::find($id);
@@ -163,7 +163,7 @@ class AdminActualizarController extends Controller
                 ->with('error_code', 2)
                 ->withInput();
         } else {
-
+            DB::beginTransaction();
             try {
                 $tipo = TipoCalificaciones::find($id);
                 $tipo->nombre = $nombre;
@@ -186,7 +186,7 @@ class AdminActualizarController extends Controller
     }
     public function gestionClose()
     {
-
+        DB::beginTransaction();
         try {
             $id = Gestiones::max('id');
             $gestion = Gestiones::find($id);
@@ -225,7 +225,7 @@ class AdminActualizarController extends Controller
                 ->with('error_code', 2)->with('idarea', $idarea)->with('area', $area)
                 ->withInput();
         } else {
-
+            DB::beginTransaction();
             try {
                 $materia = Materias::find($id);
                 $materia->nombre = $nombre;
@@ -273,7 +273,7 @@ class AdminActualizarController extends Controller
                 ->with(compact('dev_id_1', 'dev_id_2', 'dev_name_1', 'dev_name_2'))
                 ->withInput();
         } else {
-
+            DB::beginTransaction();
             try {
                 $persona = Personas::find($id);
                 $persona->nombre = $request->input('editnombre');
@@ -326,7 +326,7 @@ class AdminActualizarController extends Controller
                 ->with(compact('dev_id_1', 'dev_id_2', 'dev_name_1', 'dev_name_2'))
                 ->withInput();
         } else {
-
+            DB::beginTransaction();
             try {
                 $persona = Personas::find($id);
                 $persona->nombre = $request->input('editnombre');
@@ -382,7 +382,7 @@ class AdminActualizarController extends Controller
                 ->with(compact('dev_id_1', 'dev_id_2', 'dev_name_1', 'dev_name_2'))
                 ->withInput();
         } else {
-
+            DB::beginTransaction();
             try {
                 $persona = Personas::find($id);
                 $persona->nombre = $request->input('editnombre');
@@ -428,7 +428,7 @@ class AdminActualizarController extends Controller
                 ->with('error_code', 2)->with('idnivel', $idnivel)->with('nivel', $area)
                 ->withInput();
         } else {
-
+            DB::beginTransaction();
             try {
                 $curso = Cursos::find($id);
                 $curso->nombre = $nombre;
@@ -477,7 +477,7 @@ class AdminActualizarController extends Controller
                 ->with('error_code', 2)->with(compact('idgestion', 'idturno', 'idcurso', 'gestion', 'turno', 'curso'))
                 ->withInput();
         } else {
-
+            DB::beginTransaction();
             try {
                 $paralelo = CursoParalelos::find($id);
                 $paralelo->id_gestion = $idgestion;
@@ -522,7 +522,7 @@ class AdminActualizarController extends Controller
                 ->with('error_code', 2)
                 ->withInput();
         } else {
-
+            DB::beginTransaction();
             try {
                 $inscripcion = Inscripciones::find($id);
                 $inscripcion->id_cursos_paralelos = $idcurso;
@@ -565,7 +565,7 @@ class AdminActualizarController extends Controller
                 ->with('error_code', 2)
                 ->withInput();
         } else {
-
+            DB::beginTransaction();
             try {
                 $materia = MateriaCursos::find($id);
                 $materia->id_curso = $idcurso;
@@ -608,14 +608,14 @@ class AdminActualizarController extends Controller
                 ->with('error_code', 2)
                 ->withInput();
         } else {
-
+            DB::beginTransaction();
             try {
                 $asignar = AsignarMaterias::find($id);
                 $asignar->id_profesores = $idProfesor;
                 $asignar->save();
                 return back();
             } catch (\Exception $e) {
-                DB::rollBack();
+                DB::rollback();
                 $notificacion = array(
                     'message' => 'Ocurrio un error',
                     'alert-type' => 'error'

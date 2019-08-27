@@ -9,7 +9,8 @@
                         @if($materia->asignarParalelo->id == $curso->asignarParalelo->id)
                             <li>
                                 <a id="notas-alumnos" data-id="{{$materia->id}}"
-                                   data-materia="{{$materia->id_materia}}">{{$materia->asignarMateria->nombre}}</a>
+                                   data-materia="{{$materia->id_materia}}"><span
+                                        class="btn icon-minus"></span>{{$materia->asignarMateria->nombre}}</a>
                             </li>
                         @endif
                     @endforeach
@@ -19,7 +20,7 @@
         <li>
             <form action="{{url('logout')}}" method="post">
                 {!! csrf_field() !!}
-                <button type="submit" class="btn"> Cerrar sesion <span class="btn icon-enter"></span></button>
+                <button type="submit" class="btn"> Cerrar sesion <span class="btn icon-exit"></span></button>
             </form>
         </li>
     </ul>
@@ -66,14 +67,12 @@
 @endsection
 @section('content')
     <div id="Contenedor">
-
     </div>
     <script>
         $(document).on('click', "#edit-item", function () {
             var id = $(this).data("id");
             var nota = $(this).data("nota");
             var row = $(this).closest('tr').index();
-            // var data = document.getElementById("data_table").rows[row + 1].cells[1].innerHTML;
             $("#pknota").val(id);
             $("#editar_nota").val(nota);
             $("#row").val(row + 1);
@@ -100,21 +99,25 @@
             var id = $("#pknota").val();
             var nota = $("#editar_nota").val();
             var row = $("#row").val();
-            if (id != '') {
-                var _token = $('input[name="_token"]').val();
-                $.ajax({
-                    url: "{{ route('ProfesorNota.edit') }}",
-                    method: "POST",
-                    data: {id: id, nota: nota, _token: _token},
-                    success: function (data) {
-                        if (data == "fallo") {
-                            toastr.error("Error. No se pudo guardar los cambios");
-                        } else {
-                            document.getElementById('data_table').rows[row].cells[1].innerText = nota;
-                            $("#editar-calificacion").modal('hide');
+            if (nota > "34" || nota < "101") {
+                if (id != '') {
+                    var _token = $('input[name="_token"]').val();
+                    $.ajax({
+                        url: "{{ route('ProfesorNota.edit') }}",
+                        method: "POST",
+                        data: {id: id, nota: nota, _token: _token},
+                        success: function (data) {
+                            if (data == "fallo") {
+                                toastr.error("Error. No se pudo guardar los cambios");
+                            } else {
+                                document.getElementById('data_table').rows[row].cells[1].innerText = nota;
+                                $("#editar-calificacion").modal('hide');
+                            }
                         }
-                    }
-                });
+                    });
+                }
+            } else {
+                toastr.error("La nota debe ser entre 35 y 100 puntos");
             }
         });
     </script>
