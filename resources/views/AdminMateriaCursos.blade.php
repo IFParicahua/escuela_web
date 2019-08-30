@@ -59,8 +59,7 @@
                 </div>
                 <div class="modal-body">
                     <form data-toggle="validator" method="post" action="{{url('AdminMateriaCursos/create')}}"
-                          role="form"
-                          id="form-new">
+                          role="form" id="form-new">
                         {!! csrf_field() !!}
                         <div class="panel-body">
                             <div class="row">

@@ -42,9 +42,9 @@ body {
     padding-right: 3%;
 }
 
-.sidebar li:hover {
-    background: #444;
-}
+/*.sidebar li:hover {*/
+/*    background: #444;*/
+/*}*/
 
 .sidebar a {
     display: block;
@@ -54,6 +54,7 @@ body {
 
 .sidebar a:hover {
     color: #ffffff;
+    background: #444;
     text-decoration: none;
 }
 

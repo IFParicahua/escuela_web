@@ -130,7 +130,10 @@ Route::post('/Profesor/Curso', 'ProfesorController@profesorCurso')->name('Profes
 Route::post('/ProfesorNota/edit', 'ProfesorController@notaEditar')->name('ProfesorNota.edit');
 
 Route::get('/Contador', 'ContadorController@index');
-
+Route::post('/Contador/monto', 'ContadorController@monto');
+Route::get('/Contador/inicio', 'ContadorController@inicio')->name('Contador.inicio');
+Route::post('/Contador/alumnos', 'ContadorController@contadorAlumno')->name('Contador.alumnos');
+Route::post('/Contador/edit', 'ContadorController@cuotaEditar')->name('Contador.edit');
 //Route::get('/Regente', function () { return view('Regente'); });
 Route::get('/Padre', 'TutorController@index');
 Route::post('/Tutor/Alumno', 'TutorController@tutoAlumno')->name('Tutor.Alumno');

@@ -1,7 +1,5 @@
 @extends('layout.app')
 @section('content')
-    <style>
-    </style>
     <div class="menu">
         <ul>
             @foreach ($roles as $rol)

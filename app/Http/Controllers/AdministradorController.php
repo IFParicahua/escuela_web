@@ -74,7 +74,7 @@ class AdministradorController extends Controller
 
     public function alumno()
     {
-        $alumnos = Alumnos::with('alumnoPersona')->get();
+        $alumnos = Alumnos::with('alumnoPersona')->orderBy('id', 'desc')->get();
         return view('AdminAlumnos', compact('alumnos', 'tutores'));
     }
 
@@ -102,7 +102,7 @@ class AdministradorController extends Controller
 
     public function inscripcion()
     {
-        $inscripciones = Inscripciones::all();
+        $inscripciones = Inscripciones::orderBy('id', 'desc')->get();
         $cursos = CursoParalelos::all();
         $cupos = DB::table('inscripciones')
             ->join('curso_paralelos', 'curso_paralelos.id', '=', 'inscripciones.id_cursos_paralelos')

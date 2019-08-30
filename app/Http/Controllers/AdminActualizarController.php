@@ -43,6 +43,7 @@ class AdminActualizarController extends Controller
                 $area = Areas::find($id);
                 $area->nombre = $nombre;
                 $area->save();
+                DB::commit();
                 return back();
             } catch (\Exception $e) {
                 DB::rollback();
@@ -58,6 +59,7 @@ class AdminActualizarController extends Controller
     }
     public function nivelEditar(Request $request)
     {
+
         $id = $request->input('pknivel');
         $nombre = $request->input('editnombre');
         $validar = Validator::make($request->all(), [
@@ -77,6 +79,7 @@ class AdminActualizarController extends Controller
                 $nivel = Niveles::find($id);
                 $nivel->nombre = $nombre;
                 $nivel->save();
+                DB::commit();
                 return back();
             } catch (\Exception $e) {
                 DB::rollback();
@@ -92,6 +95,7 @@ class AdminActualizarController extends Controller
     }
     public function turnoEditar(Request $request)
     {
+
         $id = $request->input('pkturno');
         $nombre = $request->input('editnombre');
         $validar = Validator::make($request->all(), [
@@ -111,6 +115,7 @@ class AdminActualizarController extends Controller
                 $turno = Turnos::find($id);
                 $turno->nombre = $nombre;
                 $turno->save();
+                DB::commit();
                 return back();
             } catch (\Exception $e) {
                 DB::rollback();
@@ -132,6 +137,7 @@ class AdminActualizarController extends Controller
             $gestion = Gestiones::find($id);
             $gestion->descripcion = $request->input('editdescripcion');
             $gestion->save();
+            DB::commit();
             return back();
         } catch (\Exception $e) {
             DB::rollback();
@@ -147,6 +153,7 @@ class AdminActualizarController extends Controller
     }
     public function TcalificacionEditar(Request $request)
     {
+
         $id = $request->input('pkTCalificacion');
         $nombre = $request->input('editnombre');
         $inicio = $request->input('edit_inicio');
@@ -170,6 +177,7 @@ class AdminActualizarController extends Controller
                 $tipo->fecha_inicial = $inicio;
                 $tipo->fecha_final = $fin;
                 $tipo->save();
+                DB::commit();
                 return back();
             } catch (\Exception $e) {
                 DB::rollback();
@@ -192,6 +200,7 @@ class AdminActualizarController extends Controller
             $gestion = Gestiones::find($id);
             $gestion->estado = '1';
             $gestion->save();
+            DB::commit();
             return back();
         } catch (\Exception $e) {
             DB::rollback();
@@ -206,6 +215,7 @@ class AdminActualizarController extends Controller
     }
     public function materiaEditar(Request $request)
     {
+
         $id = $request->input('pkmateria');
         $idarea = $request->input('editarea_id');
         $nombre = $request->input('editnombre');
@@ -232,6 +242,7 @@ class AdminActualizarController extends Controller
                 $materia->id_area = $idarea;
                 $materia->estado = '0';
                 $materia->save();
+                DB::commit();
                 return back();
             } catch (\Exception $e) {
                 DB::rollback();
@@ -248,6 +259,7 @@ class AdminActualizarController extends Controller
     }
     public function tutorEditar(Request $request)
     {
+
         $id = $request->input('PKpersona');
         $validar = Validator::make($request->all(), [
             'editci' => 'unique:personas,ci,' . $id . ',id'
@@ -284,6 +296,7 @@ class AdminActualizarController extends Controller
                 $persona->telefono = $request->input('edittelefono');
                 $persona->sexo = $request->input('editsexo');
                 $persona->save();
+                DB::commit();
                 return back();
             } catch (\Exception $e) {
                 DB::rollback();
@@ -299,6 +312,7 @@ class AdminActualizarController extends Controller
     }
     public function alumnoEditar(Request $request)
     {
+
         $id = $request->input('pkpersona');
         $idAlumno = Alumnos::where('id_persona', $id)->value('id');
         $validar = Validator::make($request->all(), [
@@ -342,11 +356,12 @@ class AdminActualizarController extends Controller
                 $alumno->idtutor = $request->input('editutor_id');
                 $alumno->rude = $request->input('editrude');
                 $alumno->save();
+                DB::commit();
                 return back();
             } catch (\Exception $e) {
                 DB::rollback();
                 $notificacion = array(
-                    'message' => 'Ocurrio un error',
+                    'message' => 'Ocurrio un error' . $request->input('editutor_id') . '',
                     'alert-type' => 'error'
                 );
                 return back()->with($notificacion)
@@ -357,6 +372,7 @@ class AdminActualizarController extends Controller
     }
     public function profesorEditar(Request $request)
     {
+
         $id = $request->input('pkpersona');
         $validar = Validator::make($request->all(), [
             'editci' => 'unique:personas,ci,' . $id . ',id'
@@ -393,6 +409,7 @@ class AdminActualizarController extends Controller
                 $persona->telefono = $request->input('edittelefono');
                 $persona->sexo = $request->input('editsexo');
                 $persona->save();
+                DB::commit();
                 return back();
             } catch (\Exception $e) {
                 DB::rollback();
@@ -409,6 +426,7 @@ class AdminActualizarController extends Controller
     }
     public function cursoEditar(Request $request)
     {
+
         $id = $request->input('pkcurso');
         $idnivel = $request->input('editnivel');
         $nombre = $request->input('editnombre');
@@ -435,6 +453,7 @@ class AdminActualizarController extends Controller
                 $curso->grado = $request->input('editgrado');
                 $curso->id_nivel = $idnivel;
                 $curso->save();
+                DB::commit();
                 return back();
             } catch (\Exception $e) {
                 DB::rollback();
@@ -451,6 +470,7 @@ class AdminActualizarController extends Controller
     }
     public function paraleloEditar(Request $request)
     {
+
         $id = $request->input('pkparalelo');
         $idgestion = $request->input('editgestion_id');
         $idturno = $request->input('editurno_id');
@@ -486,6 +506,7 @@ class AdminActualizarController extends Controller
                 $paralelo->nombre = $nombre;
                 $paralelo->cupo_maximo = $cupo;
                 $paralelo->save();
+                DB::commit();
                 return back();
             } catch (\Exception $e) {
                 DB::rollback();
@@ -501,6 +522,7 @@ class AdminActualizarController extends Controller
     }
     public function inscripcionEditar(Request $request)
     {
+
         $id = $request->input('pkinscripcion');
         $idcurso = $request->input('edit_curso_id');
         $curso = $request->input('edit_curso_name');
@@ -529,6 +551,7 @@ class AdminActualizarController extends Controller
                 $inscripcion->id_alumno = $idalumno;
                 $inscripcion->observacion = $observacion;
                 $inscripcion->save();
+                DB::commit();
                 return back();
             } catch (\Exception $e) {
                 DB::rollback();
@@ -545,6 +568,7 @@ class AdminActualizarController extends Controller
     }
     public function materiaCursosEditar(Request $request)
     {
+
         $id = $request->input('pkcursomateria');
         $idcurso = $request->input('edit_curso_id');
         $curso = $request->input('edit_curso_name');
@@ -571,6 +595,7 @@ class AdminActualizarController extends Controller
                 $materia->id_curso = $idcurso;
                 $materia->id_materia = $idmateria;
                 $materia->save();
+                DB::commit();
                 return back();
             } catch (\Exception $e) {
                 DB::rollback();
@@ -587,6 +612,7 @@ class AdminActualizarController extends Controller
     }
     public function asignarMateriaEditar(Request $request)
     {
+
         $id = $request->input('pkasignacion');
         $idParalelo = Session('paralelo-id');
         $idMateria = AsignarMaterias::where('id', '=', $id)->value('id_materia');
@@ -613,6 +639,7 @@ class AdminActualizarController extends Controller
                 $asignar = AsignarMaterias::find($id);
                 $asignar->id_profesores = $idProfesor;
                 $asignar->save();
+                DB::commit();
                 return back();
             } catch (\Exception $e) {
                 DB::rollback();

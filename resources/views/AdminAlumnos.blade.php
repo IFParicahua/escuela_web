@@ -90,8 +90,7 @@
                                     <label for="rude" class="control-label">Rude:</label>
                                     <input type="text" class="form-control" id="rude" name="rude" maxlength="10"
                                            value="{{ old('rude') }}"
-                                           onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;"
-                                           required>
+                                           onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;">
                                 </div>
                             </div>
 
@@ -179,7 +178,7 @@
                                 <div id="ci" class="form-group col-md-3 pl-1">
                                     <label for="ci" class="control-label">CI:</label>
                                     <input type="text" class="form-control" id="ci" name="ci" maxlength="40"
-                                           value="{{ old('ci') }}" required>
+                                           value="{{ old('ci') }}">
                                 </div>
                             </div>
 
@@ -218,8 +217,7 @@
                                     <label for="editrude" class="control-label">Rude:</label>
                                     <input type="text" class="form-control" id="editrude" name="editrude" maxlength="10"
                                            value="{{ old('editrude') }}"
-                                           onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;"
-                                           required>
+                                           onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;">
                                 </div>
                             </div>
 
@@ -305,10 +303,9 @@
                                 <div id="ci" class="form-group col-md-3 pl-1">
                                     <label for="editci" class="control-label">CI:</label>
                                     <input type="text" class="form-control" id="editci" name="editci" maxlength="40"
-                                           value="{{ old('editci') }}" required>
+                                           value="{{ old('editci') }}">
                                 </div>
                             </div>
-
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default btn-fill" data-dismiss="modal">Cerrar</button>

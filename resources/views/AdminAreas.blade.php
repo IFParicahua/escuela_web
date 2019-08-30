@@ -35,10 +35,8 @@
                         </td>
                         <td style="text-align: right;width: 114px;">
                             <a style="color: rgb(255,255,255)" class="btn btn-success btn-fill icon-pencil "
-                               id="edit-item" title="Editar"
-                               data-id="{{$area->id}}"
-                               data-nombre="{{$area->nombre}}"
-                            ></a>
+                               id="edit-item" title="Editar" data-id="{{$area->id}}"
+                               data-nombre="{{$area->nombre}}"></a>
                             <a class="btn btn-danger icon-bin" data-toggle="tooltip" title="Eliminar"
                                href="AdminArea/{{$area->id}}/delete"
                                data-confirm="¿Estas seguro que quieres eliminar a {{$area->nombre}}?"></a>

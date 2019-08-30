@@ -19,7 +19,7 @@ class CreatePersonasTable extends Migration
             $table->string('apellidopat', 40);
             $table->string('apellidomat', 40);
             $table->string('direccion', 150);
-            $table->string('ci', 40)->nullable();;
+            $table->string('ci', 40)->nullable();
             $table->integer('telefono');
             $table->string('sexo', 1);
             $table->timestamps();

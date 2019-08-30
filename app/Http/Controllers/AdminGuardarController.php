@@ -6,6 +6,7 @@ use App\Alumnos;
 use App\Areas;
 use App\AsignarMaterias;
 use App\Calificaciones;
+use App\Cuotas;
 use App\CursoParalelos;
 use App\Cursos;
 use App\Gestiones;
@@ -30,7 +31,7 @@ class AdminGuardarController extends Controller
 {
     public function AreaCreate(Request $request)
     {
-
+        DB::beginTransaction();
         try {
             $nombre = $request->input('nombre');
             $validar = Validator::make($request->all(), [
@@ -49,6 +50,7 @@ class AdminGuardarController extends Controller
                 $areas->nombre = $nombre;
                 $areas->estado = '0';
                 $areas->save();
+                DB::commit();
                 return back();
             }
         } catch (\Exception $e) {
@@ -65,6 +67,7 @@ class AdminGuardarController extends Controller
 
     public function NivelesCreate(Request $request)
     {
+        DB::beginTransaction();
 
         try {
             $nombre = $request->input('nombre');
@@ -84,6 +87,7 @@ class AdminGuardarController extends Controller
                 $nivel->nombre = $nombre;
                 $nivel->estado = '0';
                 $nivel->save();
+                DB::commit();
                 return back();
             }
         } catch (\Exception $e) {
@@ -101,7 +105,7 @@ class AdminGuardarController extends Controller
 
     public function TurnosCreate(Request $request)
     {
-
+        DB::beginTransaction();
         try {
             $nombre = $request->input('nombre');
             $validar = Validator::make($request->all(), [
@@ -120,6 +124,7 @@ class AdminGuardarController extends Controller
                 $turno->nombre = $nombre;
                 $turno->estado = '0';
                 $turno->save();
+                DB::commit();
                 return back();
             }
         } catch (\Exception $e) {
@@ -137,6 +142,7 @@ class AdminGuardarController extends Controller
 
     public function GestionCreate(Request $request)
     {
+        DB::beginTransaction();
 
         try {
             $inicio = $request->input('inicio');
@@ -219,6 +225,7 @@ class AdminGuardarController extends Controller
                                 $gestion->descripcion = $request->input('descripcion');
                                 $gestion->estado = '0';
                                 $gestion->save();
+                                DB::commit();
                                 return back();
                             }
                         }
@@ -239,6 +246,7 @@ class AdminGuardarController extends Controller
 
     public function TcalificacionCreate(Request $request)
     {
+        DB::beginTransaction();
 
         try {
             $inicio = $request->input('inicio');
@@ -316,6 +324,7 @@ class AdminGuardarController extends Controller
                             $tipo->fecha_final = $fin;
                             $tipo->estado = '0';
                             $tipo->save();
+                            DB::commit();
                             return back();
                         }
                     }
@@ -336,6 +345,7 @@ class AdminGuardarController extends Controller
 
     public function MateriaCreate(Request $request)
     {
+        DB::beginTransaction();
 
         try {
             $idarea = $request->input('area_id');
@@ -362,6 +372,7 @@ class AdminGuardarController extends Controller
                 $materia->id_area = $idarea;
                 $materia->estado = '0';
                 $materia->save();
+                DB::commit();
                 return back();
             }
         } catch (\Exception $e) {
@@ -379,6 +390,7 @@ class AdminGuardarController extends Controller
 
     public function TutorCreate(Request $request)
     {
+        DB::beginTransaction();
 
         try {
             $validar = Validator::make($request->all(), [
@@ -417,6 +429,7 @@ class AdminGuardarController extends Controller
                 $rol->id_persona = $id;
                 $rol->id_rol = 5;
                 $rol->save();
+                DB::commit();
                 return back();
             }
         } catch (\Exception $e) {
@@ -434,11 +447,18 @@ class AdminGuardarController extends Controller
 
     public function AlumnoCreate(Request $request)
     {
+        DB::beginTransaction();
 
         try {
+            $nombre = $request->input('nombre');
+            $paterno = $request->input('apaterno');
+            $materno = $request->input('amaterno');
+            $cis = $request->input('ci');
+            $rude = $request->input('rude');
+            $direccion = $request->input('direccion');
             $validar = Validator::make($request->all(), [
-                'ci' => 'unique:personas',
-                'rude' => 'unique:alumnos'
+                'ci' => 'nullable|unique:personas',
+                'rude' => 'nullable|unique:alumnos'
             ]);
             $error = $validar->errors();
             if ($validar->fails()) {
@@ -451,22 +471,22 @@ class AdminGuardarController extends Controller
                     ->withInput();
             } else {
                 $persona = new Personas;
-                $persona->nombre = $request->input('nombre');
-                $persona->apellidopat = $request->input('apaterno');
-                $persona->apellidomat = $request->input('amaterno');
-                $persona->direccion = $request->input('direccion');
-                $persona->ci = $request->input('ci');
+                $persona->nombre = $nombre;
+                $persona->apellidopat = $paterno;
+                $persona->apellidomat = $materno;
+                $persona->direccion = $direccion;
+                $persona->ci = $cis;
                 $persona->telefono = $request->input('telefono');
                 $persona->sexo = $request->input('sexo');
                 $persona->save();
-                $cis = $request->input('ci');
-                $id = Personas::where('ci', $cis)->value('id');
+                $id = Personas::where([['nombre', '=', $nombre], ['apellidopat', '=', $paterno], ['apellidomat', '=', $materno], ['direccion', '=', $direccion]])->value('id');
                 $alumno = new Alumnos;
                 $alumno->nacimiento = $request->input('nacimiento');
                 $alumno->id_persona = $id;
                 $alumno->idtutor = $request->input('tutor_id');
-                $alumno->rude = $request->input('rude');
+                $alumno->rude = $rude;
                 $alumno->save();
+                DB::commit();
                 return back();
             }
         } catch (\Exception $e) {
@@ -484,6 +504,7 @@ class AdminGuardarController extends Controller
 
     public function ProfesorCreate(Request $request)
     {
+        DB::beginTransaction();
 
         try {
             $validar = Validator::make($request->all(), [
@@ -523,6 +544,7 @@ class AdminGuardarController extends Controller
                 $rol->id_persona = $id;
                 $rol->id_rol = 4;
                 $rol->save();
+                DB::commit();
                 return back();
             }
         } catch (\Exception $e) {
@@ -540,6 +562,7 @@ class AdminGuardarController extends Controller
 
     public function CursosCreate(Request $request)
     {
+        DB::beginTransaction();
 
         try {
             $idnivel = $request->input('nivel');
@@ -566,6 +589,7 @@ class AdminGuardarController extends Controller
                 $curso->id_nivel = $idnivel;
                 $curso->estado = '0';
                 $curso->save();
+                DB::commit();
                 return back();
             }
         } catch (\Exception $e) {
@@ -582,6 +606,7 @@ class AdminGuardarController extends Controller
 
     public function ParalelosCreate(Request $request)
     {
+        DB::beginTransaction();
 
         try {
             $idgestion = $request->input('gestion_id');
@@ -614,6 +639,7 @@ class AdminGuardarController extends Controller
                 $paralelo->nombre = $nombre;
                 $paralelo->cupo_maximo = $cupo;
                 $paralelo->save();
+                DB::commit();
                 return back();
             }
         } catch (\Exception $e) {
@@ -630,6 +656,7 @@ class AdminGuardarController extends Controller
 
     public function InscripcionCreate(Request $request)
     {
+        DB::beginTransaction();
 
         try {
             $idcurso = $request->input('curso_id');
@@ -671,6 +698,12 @@ class AdminGuardarController extends Controller
                     $inscripcion->id_alumno = $idalumno;
                     $inscripcion->save();
                     $id_inscripcion = Inscripciones::where([['id_alumno', '=', $idalumno], ['id_cursos_paralelos', '=', $idcurso]])->value('id');
+                    for ($i = 0; $i < 10; $i++) {
+                        $cuotas = new Cuotas();
+                        $cuotas->estado = 'p';
+                        $cuotas->id_inscripcion = $id_inscripcion;
+                        $cuotas->save();
+                    }
                     foreach ($tnotas as $tnota) {
                         foreach ($materias as $materia) {
                             $calificacion = new Calificaciones();
@@ -681,6 +714,7 @@ class AdminGuardarController extends Controller
                             $calificacion->save();
                         }
                     }
+                    DB::commit();
                     return back();
                 }
             }
@@ -699,6 +733,7 @@ class AdminGuardarController extends Controller
 
     public function materiaCursosCreate(Request $request)
     {
+        DB::beginTransaction();
 
         try {
             $cursos = $request->input('curso_id');
@@ -717,6 +752,7 @@ class AdminGuardarController extends Controller
                     $asignar->save();
                 }
             }
+            DB::commit();
             return back();
         } catch (\Exception $e) {
             DB::rollback();
@@ -733,6 +769,7 @@ class AdminGuardarController extends Controller
 
     public function asignarMateriaCreate(Request $request)
     {
+        DB::beginTransaction();
 
         try {
             $idParalelo = Session('paralelo-id');
@@ -761,6 +798,7 @@ class AdminGuardarController extends Controller
                 $asignar->id_profesores = $idProfesor;
                 $asignar->id_cursos_paralelos = $idParalelo;
                 $asignar->save();
+                DB::commit();
                 return back();
             }
         } catch (\Exception $e) {

@@ -20,8 +20,10 @@
 <body>
 <div class="sidebar">
     <div class="titulos">
-        <span class="usuario">{{Session('session-user')}}</span>
-        <span class="rol">{{Session('sesion-rol')}}</span>
+        <a href="/inicio">
+            <span class="usuario">{{Session('session-user')}}</span>
+            <span class="rol">{{Session('sesion-rol')}}</span>
+        </a>
     </div>
     <ul>
         <li><a href="/AdminArea">Area</a></li>

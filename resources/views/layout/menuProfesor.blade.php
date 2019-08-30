@@ -18,8 +18,10 @@
 <body>
 <div class="sidebar">
     <div class="titulos">
-        <span class="usuario">{{Session('session-user')}}</span>
-        <span class="rol">({{Session('sesion-rol')}})</span>
+        <a href="/inicio">
+            <span class="usuario">{{Session('session-user')}}</span>
+            <span class="rol">({{Session('sesion-rol')}})</span>
+        </a>
     </div>
     @yield('content-menu')
 </div>
@@ -49,15 +51,12 @@
         case 'info':
             toastr.info("{{ Session::get('message') }}");
             break;
-
         case 'warning':
             toastr.warning("{{ Session::get('message') }}");
             break;
-
         case 'success':
             toastr.success("{{ Session::get('message') }}");
             break;
-
         case 'error':
             toastr.error("{{ Session::get('message') }}");
             break;

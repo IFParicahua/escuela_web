@@ -19,17 +19,20 @@ use App\TipoCalificaciones;
 use App\Turnos;
 use App\Tutores;
 use App\User;
-use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
 
 class AdminEliminarController extends Controller
 {
     public function areaDelete($id)
     {
+        DB::beginTransaction();
         try {
             $area = Areas::find($id);
             $area->delete();
+            DB::commit();
             return back();
-        } catch (QueryException $e) {
+        } catch (\Exception $e) {
+            DB::rollBack();
             $nombre = Areas::where('id', '=', $id)->value('nombre');
             $notificacion = array(
                 'message' => 'No se pudo eliminar a ' . $nombre,
@@ -42,11 +45,14 @@ class AdminEliminarController extends Controller
 
     public function niveleDelete($id)
     {
+        DB::beginTransaction();
         try {
             $area = Niveles::find($id);
             $area->delete();
+            DB::commit();
             return back();
-        } catch (QueryException $e) {
+        } catch (\Exception $e) {
+            DB::rollBack();
             $nombre = Niveles::where('id', '=', $id)->value('nombre');
             $notificacion = array(
                 'message' => 'No se pudo eliminar a ' . $nombre,
@@ -58,11 +64,14 @@ class AdminEliminarController extends Controller
 
     public function turnoDelete($id)
     {
+        DB::beginTransaction();
         try {
             $area = Turnos::find($id);
             $area->delete();
+            DB::commit();
             return back();
-        } catch (QueryException $e) {
+        } catch (\Exception $e) {
+            DB::rollBack();
             $nombre = Turnos::where('id', '=', $id)->value('nombre');
             $notificacion = array(
                 'message' => 'No se pudo eliminar a ' . $nombre,
@@ -74,11 +83,14 @@ class AdminEliminarController extends Controller
 
     public function gestionDelete($id)
     {
+        DB::beginTransaction();
         try {
             $area = Gestiones::find($id);
             $area->delete();
+            DB::commit();
             return back();
-        } catch (QueryException $e) {
+        } catch (\Exception $e) {
+            DB::rollBack();
             $nombre = Gestiones::where('id', '=', $id)->value('nombre');
             $notificacion = array(
                 'message' => 'No se pudo eliminar a ' . $nombre,
@@ -90,11 +102,14 @@ class AdminEliminarController extends Controller
 
     public function TcalificacionDelete($id)
     {
+        DB::beginTransaction();
         try {
             $area = TipoCalificaciones::find($id);
             $area->delete();
+            DB::commit();
             return back();
-        } catch (QueryException $e) {
+        } catch (\Exception $e) {
+            DB::rollBack();
             $nombre = TipoCalificaciones::where('id', '=', $id)->value('nombre');
             $notificacion = array(
                 'message' => 'No se pudo eliminar a ' . $nombre,
@@ -106,11 +121,14 @@ class AdminEliminarController extends Controller
 
     public function materiaDelete($id)
     {
+        DB::beginTransaction();
         try {
             $materia = Materias::find($id);
             $materia->delete();
+            DB::commit();
             return back();
-        } catch (QueryException $e) {
+        } catch (\Exception $e) {
+            DB::rollBack();
             $nombre = Materias::where('id', '=', $id)->value('nombre');
             $notificacion = array(
                 'message' => 'No se pudo eliminar ' . $nombre,
@@ -122,6 +140,7 @@ class AdminEliminarController extends Controller
 
     public function tutorDelete($id)
     {
+        DB::beginTransaction();
         try {
             $tutor = Tutores::find($id);
             $tutor->delete();
@@ -133,8 +152,10 @@ class AdminEliminarController extends Controller
             $rol->delete();
             $persona = Personas::find($tutor->tutorPersona->id);
             $persona->delete();
+            DB::commit();
             return back();
-        } catch (QueryException $e) {
+        } catch (\Exception $e) {
+            DB::rollBack();
             $notificacion = array(
                 'message' => 'No se pudo eliminar a ' . $tutor->tutorPersona->nombre,
                 'alert-type' => 'error'
@@ -145,13 +166,16 @@ class AdminEliminarController extends Controller
 
     public function alumnoDelete($id)
     {
+        DB::beginTransaction();
         try {
             $alumno = Alumnos::find($id);
             $alumno->delete();
             $persona = Personas::find($alumno->alumnoPersona->id);
             $persona->delete();
+            DB::commit();
             return back();
-        } catch (QueryException $e) {
+        } catch (\Exception $e) {
+            DB::rollBack();
             $notificacion = array(
                 'message' => 'No se pudo eliminar a ' . $alumno->alumnoPersona->nombre,
                 'alert-type' => 'error'
@@ -162,6 +186,7 @@ class AdminEliminarController extends Controller
 
     public function profesorDelete($id)
     {
+        DB::beginTransaction();
         try {
             $profesor = Profesores::find($id);
             $profesor->delete();
@@ -173,8 +198,10 @@ class AdminEliminarController extends Controller
             $rol->delete();
             $persona = Personas::find($profesor->profesorPersona->id);
             $persona->delete();
+            DB::commit();
             return back();
-        } catch (QueryException $e) {
+        } catch (\Exception $e) {
+            DB::rollBack();
             $notificacion = array(
                 'message' => 'No se pudo eliminar a ' . $profesor->profesorPersona->nombre,
                 'alert-type' => 'error'
@@ -193,11 +220,14 @@ class AdminEliminarController extends Controller
 
     public function paralelosDelete($id)
     {
+        DB::beginTransaction();
         try {
             $paralelo = CursoParalelos::find($id);
             $paralelo->delete();
+            DB::commit();
             return back();
-        } catch (QueryException $e) {
+        } catch (\Exception $e) {
+            DB::rollBack();
             $nombre = Materias::where('id', '=', $id)->value('nombre');
             $notificacion = array(
                 'message' => 'No se pudo eliminar el paralelo ' . $nombre,
@@ -209,11 +239,14 @@ class AdminEliminarController extends Controller
 
     public function inscripcionDelete($id)
     {
+        DB::beginTransaction();
         try {
             $inscripciones = Inscripciones::find($id);
             $inscripciones->delete();
+            DB::commit();
             return back();
-        } catch (QueryException $e) {
+        } catch (\Exception $e) {
+            DB::rollBack();
             $inscripcion = Inscripciones::find($id);
             $nombre = $inscripcion->inscripcionAlumno->alumnoPersona->nombre . ' ' . $inscripcion->inscripcionAlumno->alumnoPersona->apellidopat . ' ' . $inscripcion->inscripcionAlumno->alumnoPersona->apellidomat;
             $curso = $inscripcion->inscripcionParalelo->paraleloCurso->nombre . ' ' . $inscripcion->inscripcionParalelo->nombre . ' de ' . $inscripcion->inscripcionParalelo->paraleloCurso->cursoNivel->nombre;
@@ -227,11 +260,14 @@ class AdminEliminarController extends Controller
 
     public function materiaCursosDelete($id)
     {
+        DB::beginTransaction();
         try {
             $materiacurso = MateriaCursos::find($id);
             $materiacurso->delete();
+            DB::commit();
             return back();
-        } catch (QueryException $e) {
+        } catch (\Exception $e) {
+            DB::rollBack();
             $materiacurso = MateriaCursos::find($id);
             $curso = $materiacurso->materiaCurso->nombre . ' de ' . $materiacurso->materiaCurso->cursoNivel->nombre;
             $materia = $materiacurso->materiaMateria->nombre;
@@ -245,11 +281,14 @@ class AdminEliminarController extends Controller
 
     public function asignarmateriaDelete($id)
     {
+        DB::beginTransaction();
         try {
             $materiacurso = AsignarMaterias::find($id);
             $materiacurso->delete();
+            DB::commit();
             return back();
-        } catch (QueryException $e) {
+        } catch (\Exception $e) {
+            DB::rollBack();
             $notificacion = array(
                 'message' => 'No se puede eliminar este dato',
                 'alert-type' => 'error'

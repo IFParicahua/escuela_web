@@ -56,7 +56,36 @@ class LoginController extends Controller
 
         session()->put('session-user', $nombre . ' ' . $apellidop . ' ' . $apellidom);
         $roles = PersonaRoles::where('id_persona', Auth::user()->id_persona)->get();
-        return view('inicio', compact('roles'));
+        $rol = PersonaRoles::where('id_persona', Auth::user()->id_persona)->count();
+        if ($rol == 1) {
+            $idrol = PersonaRoles::where('id_persona', Auth::user()->id_persona)->value('id_rol');
+            switch ($idrol) {
+                case '1':
+                    session()->put('sesion-rol', 'Administrador');
+                    return redirect('/Administrador');
+                    break;
+                case '2':
+                    session()->put('sesion-rol', 'Contador');
+                    return redirect('/Contador');
+                    break;
+                case '3':
+                    session()->put('sesion-rol', 'Regente');
+                    return redirect('/Regente');
+                    break;
+
+                case '4':
+                    session()->put('sesion-rol', 'Profesor');
+                    return redirect('/Profesor');
+                    break;
+
+                case '5':
+                    session()->put('sesion-rol', 'Padre');
+                    return redirect('/Padre');
+                    break;
+            }
+        } else {
+            return view('inicio', compact('roles'));
+        }
     }
 
     public function redirect($id)
