@@ -24,7 +24,6 @@ class RegenteController extends Controller
             $fechaActual = date("d/m/Y");
             $curso = CursoParalelos::where('id', '=', $idParalelos)->first();
             $inscripciones = Inscripciones::where('id_cursos_paralelos', '=', $idParalelos)->get();
-
             $i = 0;
             $tabla = '<div class="col-11" style="margin: auto;"><div class="row"><div class="col-md-12 bg-primary">';
             $tabla .= '<h3 style="text-align: center;color:#ffffff">' . $curso->paraleloCurso->nombre . ' ' . $curso->nombre . ' de nivel ' . $curso->paraleloCurso->cursoNivel->nombre . '</h3>';
