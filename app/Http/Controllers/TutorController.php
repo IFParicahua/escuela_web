@@ -61,7 +61,7 @@ class TutorController extends Controller
             $comportamientos = Comportamientos::where('id_inscripcion', '=', $inscripcion)->get();
             $tabla = '<div class="col-11" style="margin: auto;"><div class="row">';
             foreach ($comportamientos as $comportamiento) {
-                $tabla .= '<div class="col-sm-6"><div class="card bg-light"><label style="position: absolute; right: 10px">' . date("d/m/Y", strtotime($comportamiento->fecha_comp)) . '</label><div class="card-body"><h5 class="card-title">' . $comportamiento->compMateria->asignarMateria->nombre . '</h5>';
+                $tabla .= '<div class="col-sm-6"><div class="card bg-light" style="margin-bottom: 10px;"><label style="position: absolute; right: 10px">' . date("d/m/Y", strtotime($comportamiento->fecha_comp)) . '</label><div class="card-body"><h5 class="card-title">' . $comportamiento->compMateria->asignarMateria->nombre . '</h5>';
                 $tabla .= '<p class="card-text">' . $comportamiento->descripcion . '</p></div></div></div>';
             }
             $tabla .= '</div></div>';

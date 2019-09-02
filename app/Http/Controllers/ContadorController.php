@@ -39,7 +39,7 @@ class ContadorController extends Controller
             $cuotas = Cuotas::all();
 
             $tabla = '<div class="col-11" style="margin: auto;"><div class="row"><div class="col-md-12 bg-primary">';
-            $tabla .= '<h3 style="text-align: center;color:#ffffff">' . $curso->paraleloCurso->nombre . '</h3>';
+            $tabla .= '<h3 style="text-align: center;color:#ffffff">' . $curso->paraleloCurso->nombre . ' ' . $curso->nombre . ' de nivel ' . $curso->paraleloCurso->cursoNivel->nombre . '</h3>';
 
             $tabla .= '</div></div>';
 

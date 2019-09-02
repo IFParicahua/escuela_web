@@ -36,7 +36,7 @@
                           id="form-new">
                         {!! csrf_field() !!}
                         <div class="panel-body">
-                            <input type="text" class="form-control" id="pkcuota" name="pkcuota"
+                            <input type="hidden" class="form-control" id="pkcuota" name="pkcuota"
                                    value="{{ old('pkcuota') }}">
                             <input type="hidden" class="form-control" id="fila" name="fila"
                                    value="{{ old('fila') }}">
@@ -72,17 +72,13 @@
             var id = $(this).data("id");
             var estado = $(this).data("estado");
             var fecha = $(this).data("fecha");
-            if (estado == 'p') {
+            if (estado == 'p' || estado == 'v') {
                 $("#fecha").val(' ');
             } else {
-                if (estado == 'v') {
-                    $("#fecha").val(' ');
-                } else {
-                    var cadena = fecha.split("-");
-                    var day = cadena[2].split(":");
-                    var dia = day[0].split(" ");
-                    $("#fecha").val(cadena[0] + '-' + cadena[1] + '-' + dia[0]);
-                }
+                var cadena = fecha.split("-");
+                var day = cadena[2].split(":");
+                var dia = day[0].split(" ");
+                $("#fecha").val(cadena[0] + '-' + cadena[1] + '-' + dia[0]);
             }
             // if(estado == 'c'){
 

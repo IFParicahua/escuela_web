@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\AsignarMaterias;
 use App\Calificaciones;
+use App\Comportamientos;
 use App\Materias;
 use App\Profesores;
 use App\TipoCalificaciones;
@@ -21,16 +22,16 @@ class ProfesorController extends Controller
         return view('Profesor', compact('cursos', 'materias'));
     }
 
-    public function prueva(Request $request)
-    {
-        if ($request->get('profesor')) {
-            $profesor = $request->get('profesor');
-            $curso = $request->get('curso');
-            $materia = $request->get('materia');
-            $query = 'Profesor = ' . $profesor . ' Curso = ' . $curso . ' Materia = ' . $materia;
-            echo $query;
-        }
-    }
+//    public function prueva(Request $request)
+//    {
+//        if ($request->get('profesor')) {
+//            $profesor = $request->get('profesor');
+//            $curso = $request->get('curso');
+//            $materia = $request->get('materia');
+//            $query = 'Profesor = ' . $profesor . ' Curso = ' . $curso . ' Materia = ' . $materia;
+//            echo $query;
+//        }
+//    }
 
     public function profesorCurso(Request $request)
     {
@@ -59,8 +60,11 @@ class ProfesorController extends Controller
                         $tabla .= $nota->nota;
                     }
                     $tabla .= '</td>';
-                    $tabla .= '<td style="text-align: center"><a style="color: rgb(255,255,255)" class="btn btn-success btn-fill icon-plus "id="edit-item" title="Editar" data-id=' . $nota->id . ' data-nota=' . $nota->nota . '></a></td>';
-                    $tabla .= '</tr>';
+                    $tabla .= '<td style="text-align: center;width: 124px;">';
+                    $tabla .= '<a style="color: rgb(255,255,255)" class="btn btn-danger btn-fill icon-eye" id="mensaje-item" title="Comportamiento" data-idins=' . $nota->calificacionInscripcion->id . ' data-idmateria=' . $idAsgMateria . ' data-alumno="' . $nota->calificacionInscripcion->inscripcionAlumno->alumnoPersona->apellidopat . ' ' . $nota->calificacionInscripcion->inscripcionAlumno->alumnoPersona->apellidomat . ' ' . $nota->calificacionInscripcion->inscripcionAlumno->alumnoPersona->nombre . '"></a>';
+                    $tabla .= '</td><td style="text-align: center;width: 124px;">';
+                    $tabla .= '<a style="color: rgb(255,255,255)" class="btn btn-success btn-fill icon-plus" id="edit-item" title="Editar" data-id=' . $nota->id . ' data-nota=' . $nota->nota . '></a>';
+                    $tabla .= '</td></tr>';
                 }
             }
             echo $tabla;
@@ -68,6 +72,7 @@ class ProfesorController extends Controller
     }
     public function notaEditar(Request $request)
     {
+        DB::beginTransaction();
         if ($request->get('id')) {
             try {
                 $id = $request->get('id');
@@ -75,12 +80,36 @@ class ProfesorController extends Controller
                 $notas = Calificaciones::find($id);
                 $notas->nota = $nota;
                 $notas->save();
+                DB::commit();
                 echo $nota;
             } catch (\Exception $e) {
                 DB::rollBack();
                 echo "fallo";
             }
 
+        }
+    }
+
+    public function compEditar(Request $request)
+    {
+        DB::beginTransaction();
+        if ($request->get('id')) {
+            try {
+                $id = $request->get('id');
+                $comp = $request->get('comp');
+                $materia = $request->get('materia');
+                $comportamiento = new Comportamientos;
+                $comportamiento->descripcion = $comp;
+                $comportamiento->fecha_comp = date("Ymd");
+                $comportamiento->id_inscripcion = $id;
+                $comportamiento->id_asignar_materia = $materia;
+                $comportamiento->save();
+                DB::commit();
+                echo "Bien";
+            } catch (\Exception $e) {
+                DB::rollBack();
+                echo "fallo";
+            }
         }
     }
 }

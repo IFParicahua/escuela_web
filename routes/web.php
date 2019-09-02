@@ -36,7 +36,7 @@ Route::post('/AdminNiveles/edit', 'AdminActualizarController@nivelEditar');
 Route::get('/AdminNiveles/{id}/delete', 'AdminEliminarController@niveleDelete');
 
 //Admin-TURNOS
-Route::get('/AdminTurno', 'AdministradorController@turno')->name('AdminTurno');
+Route::get('/AdminTurno', 'AdministradorController@turno');
 Route::post('/AdminTurnos/create', 'AdminGuardarController@TurnosCreate');
 Route::post('/AdminTurnos/edit', 'AdminActualizarController@turnoEditar');
 Route::get('/AdminTurnos/{id}/delete', 'AdminEliminarController@turnoDelete');
@@ -128,18 +128,19 @@ Route::get('/AdminAsignarMaterias/{id}/delete', 'AdminEliminarController@asignar
 Route::get('/Profesor', 'ProfesorController@index');
 Route::post('/Profesor/Curso', 'ProfesorController@profesorCurso')->name('Profesor.Curso');
 Route::post('/ProfesorNota/edit', 'ProfesorController@notaEditar')->name('ProfesorNota.edit');
+Route::post('/Comportamiento/edit', 'ProfesorController@compEditar')->name('Comportamiento.edit');
 
 Route::get('/Contador', 'ContadorController@index');
 Route::post('/Contador/monto', 'ContadorController@monto');
 Route::get('/Contador/inicio', 'ContadorController@inicio')->name('Contador.inicio');
 Route::post('/Contador/alumnos', 'ContadorController@contadorAlumno')->name('Contador.alumnos');
 Route::post('/Contador/edit', 'ContadorController@cuotaEditar')->name('Contador.edit');
-//Route::get('/Regente', function () { return view('Regente'); });
 Route::get('/Padre', 'TutorController@index');
 Route::post('/Tutor/Alumno', 'TutorController@tutoAlumno')->name('Tutor.Alumno');
 Route::post('/Alumno/Comportamiento', 'TutorController@alumnoComportamiento')->name('Alumno.Comportamiento');
 
-
+Route::get('/Regente', 'RegenteController@index');
+Route::post('/Regente/alumnos', 'RegenteController@regenteAlumno')->name('Regente.alumnos');
 
 
 
